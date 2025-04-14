@@ -77,4 +77,5 @@ This project is licensed under the [MIT License](./LICENSE).
 ## 📫 Contact
 
 Made with ❤️ by [Abdul Rafay](https://rafay99.com)
+
 For any questions or suggestions, feel free to reach out or create an issue on the repo.
