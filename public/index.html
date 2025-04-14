@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Image Composer</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/framer-motion@12.6.5/dist/framer-motion.min.js"></script>
+    <link rel="stylesheet" href="/assets/fonts/poppins.css">
+    <link rel="stylesheet" href="/scripts/css/styles.css">
     <style>
       .glass {
         background: rgba(255, 255, 255, 0.15);
@@ -33,7 +34,7 @@
     </style>
   </head>
   <body
-    class="bg-gradient-to-br from-green-400 via-emerald-500 to-teal-600 text-white font-sans"
+    class="bg-gradient-to-br from-green-400 via-emerald-500 to-teal-600 text-white font-poppinss"
   >
     <section
       class="min-h-screen flex flex-col justify-center items-center text-center px-4"
@@ -90,6 +91,9 @@
       id="compressor"
       class="py-20 px-6 bg-gradient-to-b from-white to-gray-100"
     >
+
+  </div>
+
       <div
         class="max-w-2xl mx-auto glass p-10 rounded-3xl shadow-lg text-gray-900 backdrop-blur-lg"
       >
@@ -118,6 +122,20 @@
             class="w-full border border-gray-300 rounded-md p-2"
           />
         </div>
+
+        <div class="mb-4">
+          <label class="block text-sm font-medium mb-1">Output Format</label>
+          <select
+            id="outputFormat"
+            class="w-full border border-gray-300 rounded-md p-2"
+          >
+            <option value="jpeg">JPEG</option>
+            <option value="png">PNG</option>
+            <option value="webp">WebP</option>
+          </select>
+        </div>
+
+
 
         <button
           id="compressButton"
@@ -163,57 +181,6 @@
       </div>
     </section>
 
-    <script>
-      const imageInput = document.getElementById("imageInput");
-      const qualityInput = document.getElementById("qualityInput");
-      const compressButton = document.getElementById("compressButton");
-      const originalImage = document.getElementById("originalImage");
-      const compressedImage = document.getElementById("compressedImage");
-      const downloadLink = document.getElementById("downloadLink");
-
-      imageInput.addEventListener("change", function (e) {
-        const file = e.target.files[0];
-        if (file) {
-          const reader = new FileReader();
-          reader.onload = function (e) {
-            originalImage.src = e.target.result;
-            originalImage.classList.remove("hidden");
-          };
-          reader.readAsDataURL(file);
-        }
-      });
-
-      compressButton.addEventListener("click", async function () {
-        const file = imageInput.files[0];
-        if (!file) return alert("Please select an image.");
-
-        const quality = qualityInput.value;
-        const formData = new FormData();
-        formData.append("image", file);
-        formData.append("quality", quality);
-
-        try {
-          const response = await fetch("/compress", {
-            method: "POST",
-            body: formData,
-          });
-
-          if (!response.ok) throw new Error(`HTTP error: ${response.status}`);
-
-          const blob = await response.blob();
-          const imageUrl = URL.createObjectURL(blob);
-
-          compressedImage.src = imageUrl;
-          compressedImage.classList.remove("hidden");
-          downloadLink.href = imageUrl;
-          downloadLink.classList.remove("hidden");
-          downloadLink.download =
-            file.name.split(".").slice(0, -1).join(".") + "_compressed.jpg";
-        } catch (error) {
-          console.error("Compression failed:", error);
-          alert("Failed to compress. Try again.");
-        }
-      });
-    </script>
+    <script src="scripts/js/compress-image.js"></script>
   </body>
 </html>
