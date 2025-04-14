@@ -2,7 +2,7 @@
 
 **Image Composer** is a lightweight and powerful Node.js application that lets you compose images while preserving high quality. Built with a simple and modern frontend using **Tailwind CSS** and **vanilla JavaScript**, this tool is perfect for quick image composition tasks.
 
-🚀 [Live Demo](https://imagecomposer.onrender.com) | 📂 [GitHub Repository](https://github.com/rafay99-epic/ImageComposer)
+🚀 [Live Demo](https://imagecomposer-production.up.railway.app/) | 📂 [GitHub Repository](https://github.com/rafay99-epic/ImageComposer)
 
 ## 🛠️ Features
 
@@ -34,7 +34,7 @@ The application will be available at: [http://localhost:3000](http://localhost:3
 ## 🌐 Live Demo
 
 Want to try it right away?  
-👉 [Click here to use Image Composer live](https://imagecomposer.onrender.com)
+👉 [Click here to use Image Composer live](https://imagecomposer-production.up.railway.app/)
 
 ## 🤝 Contributing
 
