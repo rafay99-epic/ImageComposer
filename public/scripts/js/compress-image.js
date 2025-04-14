@@ -5,6 +5,7 @@ const originalImage = document.getElementById("originalImage");
 const compressedImage = document.getElementById("compressedImage");
 const downloadLink = document.getElementById("downloadLink");
 const outputFormatSelect = document.getElementById("outputFormat");
+const loadingMessage = document.getElementById("loadingMessage");
 
 imageInput.addEventListener("change", function (e) {
   const file = e.target.files[0];
@@ -30,6 +31,9 @@ compressButton.addEventListener("click", async function () {
   formData.append("quality", quality);
   formData.append("format", outputFormat);
 
+  loadingMessage.classList.remove("hidden");
+  compressButton.disabled = true;
+
   try {
     const response = await fetch("/compress", {
       method: "POST",
@@ -51,5 +55,8 @@ compressButton.addEventListener("click", async function () {
   } catch (error) {
     console.error("Compression failed:", error);
     alert("Failed to compress. Try again.");
+  } finally {
+    loadingMessage.classList.add("hidden");
+    compressButton.disabled = false;
   }
 });
