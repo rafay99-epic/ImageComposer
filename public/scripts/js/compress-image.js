@@ -21,9 +21,18 @@ imageInput.addEventListener("change", function (e) {
 
 compressButton.addEventListener("click", async function () {
   const file = imageInput.files[0];
-  if (!file) return alert("Please select an image.");
+  if (!file) {
+    alert("Please select an image before compressing.");
+    return;
+  }
 
-  const quality = qualityInput.value;
+  const quality = parseInt(qualityInput.value);
+  if (isNaN(quality) || quality < 0 || quality > 100) {
+    alert("Please enter a quality value between 0 and 100.");
+    qualityInput.value = "75";
+    return;
+  }
+
   const outputFormat = outputFormatSelect.value;
 
   const formData = new FormData();

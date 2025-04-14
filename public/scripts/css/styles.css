@@ -5,7 +5,8 @@ body {
 
 @font-face {
     font-family: 'Poppins';
-    src: url('Poppins-Regular.ttf') format('truetype');
+    src: url('../../assets/fonts/Poppins/Poppins-Regular.ttf') format('truetype');
+
     font-weight: 400;
     font-style: normal;
     font-display: swap;
@@ -13,7 +14,8 @@ body {
 
 @font-face {
     font-family: 'Poppins';
-    src: url('Poppins-Italic.ttf') format('truetype');
+    src: url('../../assets/fonts/Poppins/Poppins-Italic.ttf') format('truetype');
+
     font-weight: 400;
     font-style: italic;
     font-display: swap;
@@ -21,7 +23,8 @@ body {
 
 @font-face {
     font-family: 'Poppins';
-    src: url('Poppins-Bold.ttf') format('truetype');
+    src: url('../../assets/fonts/Poppins/Poppins-Bold.ttf') format('truetype');
+
     font-weight: 700;
     font-style: normal;
     font-display: swap;
@@ -29,7 +32,8 @@ body {
 
 @font-face {
     font-family: 'Poppins';
-    src: url('Poppins-BoldItalic.ttf') format('truetype');
+    src: url('../../assets/fonts/Poppins/BoldItalic.ttf') format('truetype');
+
     font-weight: 700;
     font-style: italic;
     font-display: swap;
