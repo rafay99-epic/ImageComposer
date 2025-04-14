@@ -1,55 +1,167 @@
-<!-- public/index.html -->
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <title>Image Compressor</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Image Composer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/framer-motion@12.6.5/dist/framer-motion.min.js"></script>
     <style>
-      /* Basic styling for the preview images */
-      .preview {
-        max-width: 300px;
-        max-height: 300px;
-        margin-bottom: 10px;
+      .glass {
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+      }
+
+      .scroll-down {
+        animation: bounce 2s infinite;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+
+      @keyframes bounce {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(10px);
+        }
       }
     </style>
   </head>
-  <body>
-    <h1>Image Compressor</h1>
-    <input type="file" id="imageInput" accept="image/*" /><br /><br />
-    Quality (0-100):
-    <input
-      type="number"
-      id="qualityInput"
-      min="0"
-      max="100"
-      value="75"
-    /><br /><br />
-    <button id="compressButton">Compress Image</button><br /><br />
-
-    <h2>Original Image</h2>
-    <img
-      id="originalImage"
-      class="preview"
-      src="#"
-      alt="Original Image"
-      style="display: none"
-    /><br />
-
-    <h2>Compressed Image</h2>
-    <img
-      id="compressedImage"
-      class="preview"
-      src="#"
-      alt="Compressed Image"
-      style="display: none"
-    /><br />
-
-    <a
-      id="downloadLink"
-      href="#"
-      download="compressed_image.jpg"
-      style="display: none"
-      >Download Compressed Image</a
+  <body
+    class="bg-gradient-to-br from-green-400 via-emerald-500 to-teal-600 text-white font-sans"
+  >
+    <section
+      class="min-h-screen flex flex-col justify-center items-center text-center px-4"
     >
+      <h1 class="text-5xl md:text-7xl font-extrabold mb-4">Image Composer</h1>
+      <p class="text-lg md:text-2xl max-w-2xl mb-8">
+        Compress your images for the web & mobile with blazing speed and zero
+        quality compromise.
+      </p>
+      <a
+        href="#compressor"
+        class="bg-white text-teal-600 font-bold px-8 py-3 rounded-full shadow-lg hover:bg-gray-100 transition"
+      >
+        Start Compressing
+      </a>
+      <div class="mt-10 scroll-down text-3xl">⬇️</div>
+    </section>
+
+    <section class="py-20 bg-white text-gray-800 text-center">
+      <h2 class="text-4xl font-bold mb-12 text-teal-600">
+        Why Use Image Composer?
+      </h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto px-6">
+        <div
+          class="p-6 rounded-2xl shadow-xl border-t-4 border-teal-500 bg-white"
+        >
+          <h3 class="text-2xl font-semibold mb-2">Ultra Compression</h3>
+          <p>
+            Reduce file sizes without compromising quality using smart
+            algorithms.
+          </p>
+        </div>
+        <div
+          class="p-6 rounded-2xl shadow-xl border-t-4 border-emerald-500 bg-white"
+        >
+          <h3 class="text-2xl font-semibold mb-2">Lightning Fast</h3>
+          <p>
+            Compress images instantly, even on slower connections or mobile
+            devices.
+          </p>
+        </div>
+        <div
+          class="p-6 rounded-2xl shadow-xl border-t-4 border-green-500 bg-white"
+        >
+          <h3 class="text-2xl font-semibold mb-2">Privacy First</h3>
+          <p>
+            Your files never leave your device — compression is done locally.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section
+      id="compressor"
+      class="py-20 px-6 bg-gradient-to-b from-white to-gray-100"
+    >
+      <div
+        class="max-w-2xl mx-auto glass p-10 rounded-3xl shadow-lg text-gray-900 backdrop-blur-lg"
+      >
+        <h2 class="text-3xl font-bold text-center text-teal-600 mb-8">
+          Compress Your Image
+        </h2>
+
+        <div class="mb-4">
+          <label class="block text-sm font-medium mb-1">Select Image</label>
+          <input
+            type="file"
+            id="imageInput"
+            accept="image/*"
+            class="w-full border border-gray-300 rounded-md p-2"
+          />
+        </div>
+
+        <div class="mb-4">
+          <label class="block text-sm font-medium mb-1">Quality (0–100)</label>
+          <input
+            type="number"
+            id="qualityInput"
+            min="0"
+            max="100"
+            value="75"
+            class="w-full border border-gray-300 rounded-md p-2"
+          />
+        </div>
+
+        <button
+          id="compressButton"
+          class="w-full bg-teal-600 hover:bg-teal-700 text-white font-semibold py-3 rounded-lg transition"
+        >
+          Compress Image
+        </button>
+
+        <div class="mt-10">
+          <div>
+            <h3 class="text-xl font-semibold text-teal-600 mb-2">
+              Original Image
+            </h3>
+            <img
+              id="originalImage"
+              class="mx-auto max-w-full max-h-64 hidden rounded-lg border"
+              src="#"
+              alt="Original"
+            />
+          </div>
+          <div class="mt-8">
+            <h3 class="text-xl font-semibold text-teal-600 mb-2">
+              Compressed Image
+            </h3>
+            <img
+              id="compressedImage"
+              class="mx-auto max-w-full max-h-64 hidden rounded-lg border"
+              src="#"
+              alt="Compressed"
+            />
+          </div>
+          <div class="mt-4 text-center">
+            <a
+              id="downloadLink"
+              href="#"
+              download="compressed_image.jpg"
+              class="text-teal-600 underline hidden"
+            >
+              Download Compressed Image
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
 
     <script>
       const imageInput = document.getElementById("imageInput");
@@ -65,7 +177,7 @@
           const reader = new FileReader();
           reader.onload = function (e) {
             originalImage.src = e.target.result;
-            originalImage.style.display = "block";
+            originalImage.classList.remove("hidden");
           };
           reader.readAsDataURL(file);
         }
@@ -73,13 +185,9 @@
 
       compressButton.addEventListener("click", async function () {
         const file = imageInput.files[0];
-        if (!file) {
-          alert("Please select an image.");
-          return;
-        }
+        if (!file) return alert("Please select an image.");
 
         const quality = qualityInput.value;
-
         const formData = new FormData();
         formData.append("image", file);
         formData.append("quality", quality);
@@ -90,26 +198,20 @@
             body: formData,
           });
 
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-          }
+          if (!response.ok) throw new Error(`HTTP error: ${response.status}`);
 
           const blob = await response.blob();
           const imageUrl = URL.createObjectURL(blob);
 
           compressedImage.src = imageUrl;
-          compressedImage.style.display = "block";
-
+          compressedImage.classList.remove("hidden");
           downloadLink.href = imageUrl;
-          downloadLink.style.display = "block";
-
-          // Dynamically update the download name (optional)
-          const filename =
+          downloadLink.classList.remove("hidden");
+          downloadLink.download =
             file.name.split(".").slice(0, -1).join(".") + "_compressed.jpg";
-          downloadLink.download = filename;
         } catch (error) {
-          console.error("Error compressing image:", error);
-          alert("Error compressing image.  Check console for details.");
+          console.error("Compression failed:", error);
+          alert("Failed to compress. Try again.");
         }
       });
     </script>
