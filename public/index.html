@@ -1,0 +1,117 @@
+<!-- public/index.html -->
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Image Compressor</title>
+    <style>
+      /* Basic styling for the preview images */
+      .preview {
+        max-width: 300px;
+        max-height: 300px;
+        margin-bottom: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Image Compressor</h1>
+    <input type="file" id="imageInput" accept="image/*" /><br /><br />
+    Quality (0-100):
+    <input
+      type="number"
+      id="qualityInput"
+      min="0"
+      max="100"
+      value="75"
+    /><br /><br />
+    <button id="compressButton">Compress Image</button><br /><br />
+
+    <h2>Original Image</h2>
+    <img
+      id="originalImage"
+      class="preview"
+      src="#"
+      alt="Original Image"
+      style="display: none"
+    /><br />
+
+    <h2>Compressed Image</h2>
+    <img
+      id="compressedImage"
+      class="preview"
+      src="#"
+      alt="Compressed Image"
+      style="display: none"
+    /><br />
+
+    <a
+      id="downloadLink"
+      href="#"
+      download="compressed_image.jpg"
+      style="display: none"
+      >Download Compressed Image</a
+    >
+
+    <script>
+      const imageInput = document.getElementById("imageInput");
+      const qualityInput = document.getElementById("qualityInput");
+      const compressButton = document.getElementById("compressButton");
+      const originalImage = document.getElementById("originalImage");
+      const compressedImage = document.getElementById("compressedImage");
+      const downloadLink = document.getElementById("downloadLink");
+
+      imageInput.addEventListener("change", function (e) {
+        const file = e.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = function (e) {
+            originalImage.src = e.target.result;
+            originalImage.style.display = "block";
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+
+      compressButton.addEventListener("click", async function () {
+        const file = imageInput.files[0];
+        if (!file) {
+          alert("Please select an image.");
+          return;
+        }
+
+        const quality = qualityInput.value;
+
+        const formData = new FormData();
+        formData.append("image", file);
+        formData.append("quality", quality);
+
+        try {
+          const response = await fetch("/compress", {
+            method: "POST",
+            body: formData,
+          });
+
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+
+          const blob = await response.blob();
+          const imageUrl = URL.createObjectURL(blob);
+
+          compressedImage.src = imageUrl;
+          compressedImage.style.display = "block";
+
+          downloadLink.href = imageUrl;
+          downloadLink.style.display = "block";
+
+          // Dynamically update the download name (optional)
+          const filename =
+            file.name.split(".").slice(0, -1).join(".") + "_compressed.jpg";
+          downloadLink.download = filename;
+        } catch (error) {
+          console.error("Error compressing image:", error);
+          alert("Error compressing image.  Check console for details.");
+        }
+      });
+    </script>
+  </body>
+</html>
