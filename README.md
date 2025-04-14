@@ -57,5 +57,24 @@ This project is licensed under the [MIT License](./LICENSE).
 
 ## 📫 Contact
 
-Made with ❤️ by [Abdul Rafay](https://rafay99.com)  
+Made with ❤️ by [Abdul Rafay](https://rafay99.com)
 For any questions or suggestions, feel free to reach out or create an issue on the repo.
+
+## 📸 Site Screenshots
+
+Take a look at some screenshots from **Image Composer** to get a feel for its interface and functionality:
+
+### 🌐 **Landing Page**
+
+The landing page gives users a quick overview of the app’s features, offering a smooth introduction and guide to get started with ease.
+![Landing Page](./public/assets/img/screenshot_1.png)
+
+### 🛠️ **Features Showcase**
+
+Explore the core features of Image Composer that enable efficient and high-quality image composition.  
+![Features Showcase](./public/assets/img/screenshot_2.png)
+
+### 📱 **Responsive Design**
+
+Image Composer is designed to be fully responsive, ensuring a seamless user experience across all devices, from desktop to mobile.  
+![Responsive Design](./public/assets/img/screenshot_3.png)
