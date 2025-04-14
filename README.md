@@ -51,15 +51,6 @@ To contribute:
 
 ✅ Please make sure to update tests if you modify core functionality.
 
-## 📄 License
-
-This project is licensed under the [MIT License](./LICENSE).
-
-## 📫 Contact
-
-Made with ❤️ by [Abdul Rafay](https://rafay99.com)
-For any questions or suggestions, feel free to reach out or create an issue on the repo.
-
 ## 📸 Site Screenshots
 
 Take a look at some screenshots from **Image Composer** to get a feel for its interface and functionality:
@@ -78,3 +69,12 @@ Explore the core features of Image Composer that enable efficient and high-quali
 
 Image Composer is designed to be fully responsive, ensuring a seamless user experience across all devices, from desktop to mobile.  
 ![Responsive Design](./public/assets/img/screenshot_3.png)
+
+## 📄 License
+
+This project is licensed under the [MIT License](./LICENSE).
+
+## 📫 Contact
+
+Made with ❤️ by [Abdul Rafay](https://rafay99.com)
+For any questions or suggestions, feel free to reach out or create an issue on the repo.
