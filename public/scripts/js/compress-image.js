@@ -10,6 +10,14 @@ const loadingMessage = document.getElementById("loadingMessage");
 imageInput.addEventListener("change", function (e) {
   const file = e.target.files[0];
   if (file) {
+    if (file.size > 30 * 1024 * 1024) {
+      alert("Image is too large. Maximum size is 30MB.");
+      imageInput.value = "";
+      originalImage.src = "";
+      originalImage.classList.add("hidden");
+      return;
+    }
+
     const reader = new FileReader();
     reader.onload = function (e) {
       originalImage.src = e.target.result;
@@ -49,7 +57,10 @@ compressButton.addEventListener("click", async function () {
       body: formData,
     });
 
-    if (!response.ok) throw new Error(`HTTP error: ${response.status}`);
+    if (!response.ok) {
+      const errorMessage = await response.text();
+      throw new Error(`HTTP error: ${response.status} - ${errorMessage}`);
+    }
 
     const blob = await response.blob();
     const imageUrl = URL.createObjectURL(blob);
@@ -63,7 +74,7 @@ compressButton.addEventListener("click", async function () {
     downloadLink.download = `${filename}_compressed.${outputFormat}`;
   } catch (error) {
     console.error("Compression failed:", error);
-    alert("Failed to compress. Try again.");
+    alert(error.message);
   } finally {
     loadingMessage.classList.add("hidden");
     compressButton.disabled = false;

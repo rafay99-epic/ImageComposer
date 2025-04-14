@@ -10,63 +10,11 @@ const cors = require("cors");
 const app = express();
 const port = process.env.PORT || 3000;
 
-app.use(
-  helmet({
-    contentSecurityPolicy: {
-      directives: {
-        defaultSrc: ["'self'"],
-        scriptSrc: [
-          "'self'",
-          "https://cdn.tailwindcss.com",
-          "https://cdn.jsdelivr.net",
-        ],
-        styleSrc: ["'self'", "'unsafe-inline'"],
-        imgSrc: ["'self'", "data:", "blob:"],
-        connectSrc: ["'self'"],
-        fontSrc: ["'self'"],
-      },
-    },
-  })
-);
-const allowedOrigins = [
-  "https://imagecomposer.onrender.com",
-  "https://imagecomposer-production.up.railway.app",
-  "http://localhost:3000",
-  "http://localhost:3001",
-];
-
-app.use(
-  cors({
-    origin: (origin, callback) => {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
-    methods: "POST",
-    optionsSuccessStatus: 200,
-  })
-);
-
-app.use(
-  rateLimit({
-    windowMs: 15 * 60 * 1000,
-    max: 100,
-    message:
-      "Too many requests from this IP, please try again after 15 minutes",
-    standardHeaders: true,
-    legacyHeaders: false,
-  })
-);
-
-app.use(hpp());
-
 const storage = multer.memoryStorage();
 const upload = multer({
   storage: storage,
   limits: {
-    fileSize: 5 * 1024 * 1024,
+    fileSize: 30 * 1024 * 1024,
   },
   fileFilter: (req, file, cb) => {
     const allowedMimes = ["image/jpeg", "image/png", "image/gif", "image/webp"];
@@ -144,6 +92,11 @@ app.use((err, req, res, next) => {
   console.error("Global error handler caught an error:", err.stack);
 
   if (err instanceof multer.MulterError) {
+    if (err.code === "LIMIT_FILE_SIZE") {
+      return res
+        .status(413)
+        .send("Sorry, the image size exceeds the 30MB limit.");
+    }
     return res.status(400).send(`Multer error: ${err.message}`);
   }
 
