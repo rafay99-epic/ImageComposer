@@ -30,6 +30,7 @@ app.use(
 );
 const allowedOrigins = [
   "https://imagecomposer.onrender.com",
+  "https://imagecomposer-production.up.railway.app"
   "http://localhost:3000",
   "http://localhost:3001",
 ];
