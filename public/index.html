@@ -5,82 +5,108 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Image Composer</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/framer-motion@12.6.5/dist/framer-motion.min.js"></script>
-    <style>
-      .glass {
-        background: rgba(255, 255, 255, 0.15);
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.18);
-      }
-
-      .scroll-down {
-        animation: bounce 2s infinite;
-      }
-      html {
-        scroll-behavior: smooth;
-      }
-
-      @keyframes bounce {
-        0%,
-        100% {
-          transform: translateY(0);
-        }
-        50% {
-          transform: translateY(10px);
-        }
-      }
-    </style>
+    <link rel="stylesheet" href="/assets/fonts/poppins.css" />
+    <link rel="stylesheet" href="/scripts/css/styles.css" />
+    <link rel="icon" type="image/x-icon" href="/assets/img/logo.ico" />
   </head>
   <body
-    class="bg-gradient-to-br from-green-400 via-emerald-500 to-teal-600 text-white font-sans"
+    class="bg-gradient-to-br from-green-400 via-emerald-500 to-teal-600 text-white font-poppins"
   >
     <section
-      class="min-h-screen flex flex-col justify-center items-center text-center px-4"
+      class="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-teal-50 via-white to-blue-50 overflow-hidden px-6 py-12"
     >
-      <h1 class="text-5xl md:text-7xl font-extrabold mb-4">Image Composer</h1>
-      <p class="text-lg md:text-2xl max-w-2xl mb-8">
-        Compress your images for the web & mobile with blazing speed and zero
-        quality compromise.
-      </p>
-      <a
-        href="#compressor"
-        class="bg-white text-teal-600 font-bold px-8 py-3 rounded-full shadow-lg hover:bg-gray-100 transition"
+      <div
+        class="absolute -top-32 -left-32 w-96 h-96 bg-teal-300 opacity-20 rounded-full filter blur-3xl z-0 animate-pulse"
+      ></div>
+      <div
+        class="absolute top-20 -right-32 w-80 h-80 bg-cyan-200 opacity-30 rounded-full filter blur-2xl z-0 animate-spin-slow"
+      ></div>
+
+      <div
+        class="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-6xl w-full items-center relative z-10"
       >
-        Start Compressing
-      </a>
-      <div class="mt-10 scroll-down text-3xl">⬇️</div>
+        <div
+          class="text-center md:text-left backdrop-blur-sm bg-white/60 p-6 rounded-2xl"
+        >
+          <h1
+            class="text-4xl sm:text-5xl font-extrabold text-gray-900 leading-tight mb-6"
+          >
+            Compress Smarter.<br />
+            Deliver Faster.
+          </h1>
+          <p class="text-lg text-gray-600 mb-8 max-w-md">
+            Image Composer helps you shrink images without quality loss — all in
+            your browser, with zero data sent to the cloud.
+          </p>
+          <a
+            href="#compressor"
+            class="inline-block bg-teal-600 text-white font-semibold px-8 py-4 rounded-xl shadow-md hover:bg-teal-700 transition"
+          >
+            Start Compressing 🚀
+          </a>
+        </div>
+
+        <div class="w-full flex justify-center relative z-10">
+          <img
+            src="/assets/img/splash.jpg"
+            alt="Image Compression Illustration"
+            class="w-full max-w-md rounded-xl"
+            loading="lazy"
+          />
+        </div>
+      </div>
+
+      <div
+        class="absolute bottom-10 text-gray-400 animate-bounce text-2xl z-10"
+      >
+        ⌄
+      </div>
     </section>
 
-    <section class="py-20 bg-white text-gray-800 text-center">
-      <h2 class="text-4xl font-bold mb-12 text-teal-600">
-        Why Use Image Composer?
+    <section
+      class="py-24 bg-gradient-to-b from-white to-gray-50 text-gray-800 text-center"
+    >
+      <h2 class="text-5xl font-extrabold mb-6 text-teal-600 tracking-tight">
+        Why Choose Image Composer?
       </h2>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto px-6">
+      <p class="text-lg text-gray-600 max-w-2xl mx-auto mb-16">
+        Designed with performance, privacy, and usability in mind — here's what
+        makes us stand out.
+      </p>
+
+      <div
+        class="grid grid-cols-1 md:grid-cols-3 gap-10 max-w-7xl mx-auto px-6"
+      >
         <div
-          class="p-6 rounded-2xl shadow-xl border-t-4 border-teal-500 bg-white"
+          class="group p-8 rounded-3xl shadow-xl border bg-white/70 border-white/30 backdrop-blur-md transition-transform hover:-translate-y-2 hover:shadow-2xl duration-300"
         >
-          <h3 class="text-2xl font-semibold mb-2">Ultra Compression</h3>
-          <p>
-            Reduce file sizes without compromising quality using smart
-            algorithms.
+          <div class="text-teal-600 text-4xl mb-4">📉</div>
+          <h3 class="text-2xl font-bold mb-2">Ultra Compression</h3>
+          <p class="text-gray-600 group-hover:text-gray-800 transition">
+            Reduce file size with zero visual loss using next-gen algorithms
+            tailored for the web.
           </p>
         </div>
+
         <div
-          class="p-6 rounded-2xl shadow-xl border-t-4 border-emerald-500 bg-white"
+          class="group p-8 rounded-3xl shadow-xl border bg-white/70 border-white/30 backdrop-blur-md transition-transform hover:-translate-y-2 hover:shadow-2xl duration-300"
         >
-          <h3 class="text-2xl font-semibold mb-2">Lightning Fast</h3>
-          <p>
-            Compress images instantly, even on slower connections or mobile
-            devices.
+          <div class="text-emerald-600 text-4xl mb-4">⚡</div>
+          <h3 class="text-2xl font-bold mb-2">Lightning Fast</h3>
+          <p class="text-gray-600 group-hover:text-gray-800 transition">
+            Instant compression in your browser — no uploads, no waits, pure
+            performance.
           </p>
         </div>
+
         <div
-          class="p-6 rounded-2xl shadow-xl border-t-4 border-green-500 bg-white"
+          class="group p-8 rounded-3xl shadow-xl border bg-white/70 border-white/30 backdrop-blur-md transition-transform hover:-translate-y-2 hover:shadow-2xl duration-300"
         >
-          <h3 class="text-2xl font-semibold mb-2">Privacy First</h3>
-          <p>
-            Your files never leave your device — compression is done locally.
+          <div class="text-green-600 text-4xl mb-4">🔒</div>
+          <h3 class="text-2xl font-bold mb-2">Privacy First</h3>
+          <p class="text-gray-600 group-hover:text-gray-800 transition">
+            No data ever leaves your device. 100% local compression ensures
+            complete control.
           </p>
         </div>
       </div>
@@ -91,129 +117,127 @@
       class="py-20 px-6 bg-gradient-to-b from-white to-gray-100"
     >
       <div
-        class="max-w-2xl mx-auto glass p-10 rounded-3xl shadow-lg text-gray-900 backdrop-blur-lg"
+        class="max-w-6xl mx-auto bg-white/30 border border-white/20 backdrop-blur-xl p-10 rounded-3xl shadow-2xl text-gray-900 transition-all duration-300"
       >
-        <h2 class="text-3xl font-bold text-center text-teal-600 mb-8">
+        <h2 class="text-4xl font-extrabold text-center text-teal-600 mb-12">
           Compress Your Image
         </h2>
 
-        <div class="mb-4">
-          <label class="block text-sm font-medium mb-1">Select Image</label>
-          <input
-            type="file"
-            id="imageInput"
-            accept="image/*"
-            class="w-full border border-gray-300 rounded-md p-2"
-          />
-        </div>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
+          <div class="space-y-6">
+            <div>
+              <label class="block text-sm font-semibold text-gray-800 mb-2"
+                >Select Image</label
+              >
+              <div
+                id="dropZone"
+                class="flex items-center justify-center border-2 border-dashed border-teal-400 rounded-lg p-6 text-center cursor-pointer hover:border-teal-600 transition relative bg-white/60"
+              >
+                <p id="dropZoneText" class="text-gray-600 text-sm">
+                  Drag and drop your image here, or
+                  <span class="text-teal-600 font-medium underline"
+                    >browse</span
+                  >
+                </p>
+                <input
+                  type="file"
+                  id="imageInput"
+                  accept="image/*"
+                  class="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                />
+              </div>
+            </div>
 
-        <div class="mb-4">
-          <label class="block text-sm font-medium mb-1">Quality (0–100)</label>
-          <input
-            type="number"
-            id="qualityInput"
-            min="0"
-            max="100"
-            value="75"
-            class="w-full border border-gray-300 rounded-md p-2"
-          />
-        </div>
+            <div>
+              <label
+                for="qualityInput"
+                class="block text-sm font-semibold text-gray-800 mb-2"
+              >
+                Quality (0–100)
+              </label>
+              <input
+                type="number"
+                id="qualityInput"
+                min="0"
+                max="100"
+                value="75"
+                class="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-teal-400 transition"
+              />
+            </div>
 
-        <button
-          id="compressButton"
-          class="w-full bg-teal-600 hover:bg-teal-700 text-white font-semibold py-3 rounded-lg transition"
-        >
-          Compress Image
-        </button>
+            <div>
+              <label
+                for="outputFormat"
+                class="block text-sm font-semibold text-gray-800 mb-2"
+              >
+                Output Format
+              </label>
+              <select
+                id="outputFormat"
+                class="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-teal-400 transition"
+              >
+                <option value="jpeg">JPEG</option>
+                <option value="png">PNG</option>
+                <option value="webp">WebP</option>
+              </select>
+            </div>
 
-        <div class="mt-10">
-          <div>
-            <h3 class="text-xl font-semibold text-teal-600 mb-2">
-              Original Image
-            </h3>
-            <img
-              id="originalImage"
-              class="mx-auto max-w-full max-h-64 hidden rounded-lg border"
-              src="#"
-              alt="Original"
-            />
-          </div>
-          <div class="mt-8">
-            <h3 class="text-xl font-semibold text-teal-600 mb-2">
-              Compressed Image
-            </h3>
-            <img
-              id="compressedImage"
-              class="mx-auto max-w-full max-h-64 hidden rounded-lg border"
-              src="#"
-              alt="Compressed"
-            />
-          </div>
-          <div class="mt-4 text-center">
-            <a
-              id="downloadLink"
-              href="#"
-              download="compressed_image.jpg"
-              class="text-teal-600 underline hidden"
+            <button
+              id="compressButton"
+              class="w-full bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white font-bold py-3 rounded-xl shadow-md hover:shadow-lg transition"
             >
-              Download Compressed Image
-            </a>
+              Compress Image
+            </button>
+
+            <div
+              id="loadingMessage"
+              class="text-center text-sm text-gray-700 mt-4 hidden animate-pulse"
+            >
+              Compressing image... Please wait.
+            </div>
+          </div>
+
+          <div class="space-y-10">
+            <div>
+              <h3 class="text-xl font-bold text-teal-600 mb-2 text-center">
+                Original Image
+              </h3>
+              <img
+                id="originalImage"
+                class="mx-auto max-w-full max-h-64 hidden rounded-lg border shadow"
+                src="#"
+                alt="Original"
+              />
+            </div>
+
+            <div>
+              <h3 class="text-xl font-bold text-teal-600 mb-2 text-center">
+                Compressed Image
+              </h3>
+              <img
+                id="compressedImage"
+                class="mx-auto max-w-full max-h-64 hidden rounded-lg border shadow"
+                src="#"
+                alt="Compressed"
+              />
+            </div>
+
+            <div class="text-center">
+              <a
+                id="downloadLink"
+                href="#"
+                download="compressed_image.jpg"
+                class="text-teal-600 font-medium underline hover:text-teal-800 hidden transition"
+              >
+                ⬇ Download Compressed Image
+              </a>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
-    <script>
-      const imageInput = document.getElementById("imageInput");
-      const qualityInput = document.getElementById("qualityInput");
-      const compressButton = document.getElementById("compressButton");
-      const originalImage = document.getElementById("originalImage");
-      const compressedImage = document.getElementById("compressedImage");
-      const downloadLink = document.getElementById("downloadLink");
-
-      imageInput.addEventListener("change", function (e) {
-        const file = e.target.files[0];
-        if (file) {
-          const reader = new FileReader();
-          reader.onload = function (e) {
-            originalImage.src = e.target.result;
-            originalImage.classList.remove("hidden");
-          };
-          reader.readAsDataURL(file);
-        }
-      });
-
-      compressButton.addEventListener("click", async function () {
-        const file = imageInput.files[0];
-        if (!file) return alert("Please select an image.");
-
-        const quality = qualityInput.value;
-        const formData = new FormData();
-        formData.append("image", file);
-        formData.append("quality", quality);
-
-        try {
-          const response = await fetch("/compress", {
-            method: "POST",
-            body: formData,
-          });
-
-          if (!response.ok) throw new Error(`HTTP error: ${response.status}`);
-
-          const blob = await response.blob();
-          const imageUrl = URL.createObjectURL(blob);
-
-          compressedImage.src = imageUrl;
-          compressedImage.classList.remove("hidden");
-          downloadLink.href = imageUrl;
-          downloadLink.classList.remove("hidden");
-          downloadLink.download =
-            file.name.split(".").slice(0, -1).join(".") + "_compressed.jpg";
-        } catch (error) {
-          console.error("Compression failed:", error);
-          alert("Failed to compress. Try again.");
-        }
-      });
-    </script>
+    <script src="scripts/js/compress-image.js"></script>
+    <script src="scripts/js/drag-drop.js"></script>
   </body>
 </html>
