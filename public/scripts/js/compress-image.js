@@ -7,6 +7,11 @@ const downloadLink = document.getElementById("downloadLink");
 const outputFormatSelect = document.getElementById("outputFormat");
 const loadingMessage = document.getElementById("loadingMessage");
 
+const roundedCornersCheckbox = document.getElementById(
+  "roundedCornersCheckbox"
+);
+const cornerRadiusInput = document.getElementById("cornerRadiusInput");
+
 imageInput.addEventListener("change", function (e) {
   const file = e.target.files[0];
   if (file) {
@@ -25,6 +30,10 @@ imageInput.addEventListener("change", function (e) {
     };
     reader.readAsDataURL(file);
   }
+});
+
+roundedCornersCheckbox.addEventListener("change", function () {
+  cornerRadiusInput.disabled = !this.checked;
 });
 
 compressButton.addEventListener("click", async function () {
@@ -47,6 +56,9 @@ compressButton.addEventListener("click", async function () {
   formData.append("image", file);
   formData.append("quality", quality);
   formData.append("format", outputFormat);
+
+  formData.append("roundedCorners", roundedCornersCheckbox.checked);
+  formData.append("cornerRadius", cornerRadiusInput.value);
 
   loadingMessage.classList.remove("hidden");
   compressButton.disabled = true;

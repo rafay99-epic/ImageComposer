@@ -182,6 +182,30 @@
               </select>
             </div>
 
+            <div>
+              <label class="block text-sm font-semibold text-gray-800 mb-2"
+                >Rounded Corners</label
+              >
+              <input type="checkbox" id="roundedCornersCheckbox" class="mr-2" />
+              <label for="roundedCornersCheckbox">Apply Rounded Corners</label>
+            </div>
+
+            <div>
+              <label
+                for="cornerRadiusInput"
+                class="block text-sm font-semibold text-gray-800 mb-2"
+                >Corner Radius</label
+              >
+              <input
+                type="number"
+                id="cornerRadiusInput"
+                min="0"
+                value="20"
+                class="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-teal-400 transition"
+                disabled
+              />
+            </div>
+
             <button
               id="compressButton"
               class="w-full bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white font-bold py-3 rounded-xl shadow-md hover:shadow-lg transition"

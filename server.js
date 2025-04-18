@@ -52,31 +52,56 @@ app.post("/compress", upload.single("image"), async (req, res) => {
       .send("Invalid output format.  Must be jpeg, png, or webp.");
   }
 
+  const roundedCorners = req.body.roundedCorners === "true";
+
+  let roundedCornerRadius = parseInt(req.body.cornerRadius);
+  if (isNaN(roundedCornerRadius) || roundedCornerRadius < 0) {
+    roundedCornerRadius = 0;
+  }
+
   try {
-    let buffer;
+    let sharpImage = sharp(req.file.buffer);
+
     switch (outputFormat) {
       case "jpeg":
-        buffer = await sharp(req.file.buffer)
-          .jpeg({ quality: quality, mozjpeg: true })
-          .toBuffer();
+        sharpImage = sharpImage.jpeg({ quality: quality, mozjpeg: true });
         res.set("Content-Type", "image/jpeg");
         break;
       case "png":
-        buffer = await sharp(req.file.buffer)
-          .png({ quality: quality })
-          .toBuffer();
+        sharpImage = sharpImage.png({ quality: quality });
         res.set("Content-Type", "image/png");
         break;
       case "webp":
-        buffer = await sharp(req.file.buffer)
-          .webp({ quality: quality })
-          .toBuffer();
+        sharpImage = sharpImage.webp({ quality: quality });
         res.set("Content-Type", "image/webp");
         break;
       default:
         return res.status(400).send("Invalid output format");
     }
 
+    if (roundedCorners && roundedCornerRadius > 0) {
+      const metadata = await sharpImage.metadata();
+      const width = metadata.width;
+      const height = metadata.height;
+
+      const roundedCornersSvg = Buffer.from(
+        `<svg><rect x="0" y="0" width="${width}" height="${height}" rx="${roundedCornerRadius}" ry="${roundedCornerRadius}"/></svg>`
+      );
+
+      sharpImage = sharpImage.composite([
+        {
+          input: roundedCornersSvg,
+          blend: "dest-in",
+        },
+      ]);
+
+      if (outputFormat !== "png") {
+        sharpImage = sharpImage.png();
+        res.set("Content-Type", "image/png");
+      }
+    }
+
+    const buffer = await sharpImage.toBuffer();
     res.send(buffer);
   } catch (error) {
     console.error("Image processing error:", error);
@@ -85,9 +110,8 @@ app.post("/compress", upload.single("image"), async (req, res) => {
 });
 
 app.use((req, res, next) => {
-  res.status(404).send("404 Not Found");
+  res.status(404).sendFile(path.join(__dirname, "public", "404.html"));
 });
-
 app.use((err, req, res, next) => {
   console.error("Global error handler caught an error:", err.stack);
 
