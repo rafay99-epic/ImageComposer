@@ -2,7 +2,7 @@ const sharp = require("sharp");
 
 async function compressImage(req, res, next) {
   if (!req.file) {
-    return res.status(400).send("No image uploaded or invalid file type.");
+    return res.status(400).send("No image uploaded.");
   }
 
   try {
@@ -32,17 +32,24 @@ async function compressImage(req, res, next) {
 
     switch (outputFormat) {
       case "jpeg":
-        sharpImage = sharpImage.jpeg({ quality: quality, mozjpeg: true });
+        {
+          sharpImage = sharpImage.jpeg({ quality: quality, mozjpeg: true });
+        }
         break;
       case "png":
-        const pngCompressionLevel = Math.max(0, 9 - Math.floor(quality / 11));
-        sharpImage = sharpImage.png({
-          compressionLevel: pngCompressionLevel,
-          quality: quality,
-        });
+        {
+          const pngCompressionLevel = Math.max(0, 9 - Math.floor(quality / 11));
+          sharpImage = sharpImage.png({
+            compressionLevel: pngCompressionLevel,
+            quality: quality,
+          });
+        }
         break;
+
       case "webp":
-        sharpImage = sharpImage.webp({ quality: quality });
+        {
+          sharpImage = sharpImage.webp({ quality: quality });
+        }
         break;
     }
 

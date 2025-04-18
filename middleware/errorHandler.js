@@ -5,8 +5,10 @@ function notFoundHandler(req, res, next) {
 }
 
 function globalErrorHandler(err, req, res, next) {
-  console.error("Global error handler caught an error:", err);
-
+  logger.error("Global error handler caught an error:", {
+    error: err.message,
+    stack: err.stack,
+  });
   if (err instanceof multer.MulterError) {
     if (err.code === "LIMIT_FILE_SIZE") {
       return res.status(413).send({
