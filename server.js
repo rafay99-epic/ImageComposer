@@ -10,6 +10,17 @@ const cors = require("cors");
 const app = express();
 const port = process.env.PORT || 3000;
 
+// EJS Template engine
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views"));
+
+//  Public Folder
+app.use(express.static("public"));
+// Json Parser
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
+// Helmet
 const storage = multer.memoryStorage();
 const upload = multer({
   storage: storage,
@@ -29,9 +40,10 @@ const upload = multer({
     }
   },
 });
+// App Routes
+app.use("/", require("./routes/routes"));
 
-app.use(express.static("public"));
-
+// Image Processing
 app.post("/compress", upload.single("image"), async (req, res) => {
   if (!req.file) {
     return res.status(400).send("No image uploaded.");
@@ -109,9 +121,11 @@ app.post("/compress", upload.single("image"), async (req, res) => {
   }
 });
 
+//  404 Error
 app.use((req, res, next) => {
-  res.status(404).sendFile(path.join(__dirname, "public", "404.html"));
+  res.status(404).render("pages/404", { title: "404 Not Found" });
 });
+
 app.use((err, req, res, next) => {
   console.error("Global error handler caught an error:", err.stack);
 
@@ -138,6 +152,7 @@ app.use((err, req, res, next) => {
   res.status(500).send("Something went wrong on the server.");
 });
 
+// Port Running
 app.listen(port, () => {
   console.log(`Server listening at http://localhost:${port}`);
 });

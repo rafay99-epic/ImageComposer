@@ -1,0 +1,146 @@
+<section
+  id="compressor"
+  class="py-20 px-6 bg-gradient-to-b from-white to-gray-100"
+>
+  <div
+    class="max-w-6xl mx-auto bg-white/30 border border-white/20 backdrop-blur-xl p-10 rounded-3xl shadow-2xl text-gray-900 transition-all duration-300"
+  >
+    <h2 class="text-4xl font-extrabold text-center text-teal-600 mb-12">
+      Compress Your Image
+    </h2>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
+      <div class="space-y-6">
+        <div>
+          <label class="block text-sm font-semibold text-gray-800 mb-2"
+            >Select Image</label
+          >
+          <div
+            id="dropZone"
+            class="flex items-center justify-center border-2 border-dashed border-teal-400 rounded-lg p-6 text-center cursor-pointer hover:border-teal-600 transition relative bg-white/60"
+          >
+            <p id="dropZoneText" class="text-gray-600 text-sm">
+              Drag and drop your image here, or
+              <span class="text-teal-600 font-medium underline">browse</span>
+            </p>
+            <input
+              type="file"
+              id="imageInput"
+              accept="image/*"
+              class="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+            />
+          </div>
+        </div>
+
+        <div>
+          <label
+            for="qualityInput"
+            class="block text-sm font-semibold text-gray-800 mb-2"
+          >
+            Quality (0–100)
+          </label>
+          <input
+            type="number"
+            id="qualityInput"
+            min="0"
+            max="100"
+            value="75"
+            class="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-teal-400 transition"
+          />
+        </div>
+
+        <div>
+          <label
+            for="outputFormat"
+            class="block text-sm font-semibold text-gray-800 mb-2"
+          >
+            Output Format
+          </label>
+          <select
+            id="outputFormat"
+            class="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-teal-400 transition"
+          >
+            <option value="jpeg">JPEG</option>
+            <option value="png">PNG</option>
+            <option value="webp">WebP</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-sm font-semibold text-gray-800 mb-2"
+            >Rounded Corners</label
+          >
+          <input type="checkbox" id="roundedCornersCheckbox" class="mr-2" />
+          <label for="roundedCornersCheckbox">Apply Rounded Corners</label>
+        </div>
+
+        <div>
+          <label
+            for="cornerRadiusInput"
+            class="block text-sm font-semibold text-gray-800 mb-2"
+            >Corner Radius</label
+          >
+          <input
+            type="number"
+            id="cornerRadiusInput"
+            min="0"
+            value="20"
+            class="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-teal-400 transition"
+            disabled
+          />
+        </div>
+
+        <button
+          id="compressButton"
+          class="w-full bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white font-bold py-3 rounded-xl shadow-md hover:shadow-lg transition"
+        >
+          Compress Image
+        </button>
+
+        <div
+          id="loadingMessage"
+          class="text-center text-sm text-gray-700 mt-4 hidden animate-pulse"
+        >
+          Compressing image... Please wait.
+        </div>
+      </div>
+
+      <div class="space-y-10">
+        <div>
+          <h3 class="text-xl font-bold text-teal-600 mb-2 text-center">
+            Original Image
+          </h3>
+          <img
+            id="originalImage"
+            class="mx-auto max-w-full max-h-64 hidden rounded-lg border shadow"
+            src="#"
+            alt="Original"
+          />
+        </div>
+
+        <div>
+          <h3 class="text-xl font-bold text-teal-600 mb-2 text-center">
+            Compressed Image
+          </h3>
+          <img
+            id="compressedImage"
+            class="mx-auto max-w-full max-h-64 hidden rounded-lg border shadow"
+            src="#"
+            alt="Compressed"
+          />
+        </div>
+
+        <div class="text-center">
+          <a
+            id="downloadLink"
+            href="#"
+            download="compressed_image.jpg"
+            class="text-teal-600 font-medium underline hover:text-teal-800 hidden transition"
+          >
+            ⬇ Download Compressed Image
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
