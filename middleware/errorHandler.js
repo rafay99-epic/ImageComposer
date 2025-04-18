@@ -5,7 +5,7 @@ function notFoundHandler(req, res, next) {
 }
 
 function globalErrorHandler(err, req, res, next) {
-  logger.error("Global error handler caught an error:", {
+  console.error("Global error handler caught an error:", {
     error: err.message,
     stack: err.stack,
   });
