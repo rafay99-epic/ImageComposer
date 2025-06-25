@@ -83,8 +83,8 @@ const Footer: React.FC = () => {
               {[
                 { name: "Features", href: "#features" },
                 { name: "Image Optimizer", href: "#composer" },
+                { name: "Contact Me", href: "/contact" },
                 { name: "Documentation", href: "#" },
-                { name: "API Reference", href: "#" },
               ].map((item, index) => (
                 <li key={index}>
                   <a

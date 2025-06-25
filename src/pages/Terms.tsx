@@ -1,12 +1,5 @@
 import React from "react";
-import {
-  FileText,
-  Scale,
-  Users,
-  Zap,
-  AlertTriangle,
-  ArrowLeft,
-} from "lucide-react";
+import { FileText, Scale, Users, Zap, AlertTriangle } from "lucide-react";
 
 const Terms: React.FC = () => {
   const sections = [
