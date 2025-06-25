@@ -1,81 +1,114 @@
-# 🎨 Image Composer
+# 🖼️ Image Composer
 
-**Image Composer** is a lightweight and powerful Node.js application that lets you compose images while preserving high quality. Built with a simple and modern frontend using **Tailwind CSS** and **vanilla JavaScript**, this tool is perfect for quick image composition tasks.
+A modern, client-side image compression and optimization tool built with React and TypeScript. Process your images directly in the browser with no server uploads required.
 
-🚀 [Live Demo](https://imagecomposer-production.up.railway.app/) | 📂 [GitHub Repository](https://github.com/rafay99-epic/ImageComposer)
+![Image Composer](public/assets/Image_composer.png)
 
-## 🛠️ Features
+## ✨ Features
 
-- High-quality image composition
-- Clean and intuitive user interface
-- Fast performance with minimal setup
-- Tailwind CSS powered frontend
+- 🔒 **Client-Side Processing**: All image processing happens in your browser - your images never leave your device
+- 🎨 **Multiple Format Support**: Convert between JPEG, PNG, and WebP formats
+- 📱 **Fully Responsive**: Optimized for mobile, tablet, and desktop devices
+- 🎯 **Batch Processing**: Process multiple images at once with bulk selection tools
+- 🔄 **Real-Time Preview**: See your changes instantly before downloading
+- 🎛️ **Advanced Controls**:
+  - Quality adjustment (1-100%)
+  - Format conversion (JPEG/PNG/WebP)
+  - Rounded corners with adjustable radius
+  - Drag and drop support
+- 🌐 **Social Sharing**: Share your compression results directly to social media
+- 📊 **Compression Stats**: View detailed statistics about your image optimization
 
-## 📦 Installation & Setup
+## 🚀 Getting Started
 
-Follow these simple steps to get started locally:
+### Prerequisites
+
+- Node.js (v16 or higher)
+- npm or yarn or bun
+
+### Installation
+
+1. Clone the repository:
 
 ```bash
-# 1. Clone the repository
 git clone https://github.com/rafay99-epic/ImageComposer.git
-
-# 2. Navigate into the project directory
 cd ImageComposer
-
-# 3. Install dependencies
-npm install
-
-# 4. Start the application
-npm start
 ```
 
-The application will be available at: [http://localhost:3000](http://localhost:3000)
+2. Install dependencies:
 
-## 🌐 Live Demo
+```bash
+# Using npm
+npm install
 
-Want to try it right away?  
-👉 [Click here to use Image Composer live](https://imagecomposer-production.up.railway.app/)
+# Using yarn
+yarn
+
+# Using bun
+bun install
+```
+
+3. Start the development server:
+
+```bash
+# Using npm
+npm run dev
+
+# Using yarn
+yarn dev
+
+# Using bun
+bun dev
+```
+
+4. Open [http://localhost:5173](http://localhost:5173) in your browser
+
+## 🛠️ Built With
+
+- [React](https://reactjs.org/) - UI Framework
+- [TypeScript](https://www.typescriptlang.org/) - Type Safety
+- [Vite](https://vitejs.dev/) - Build Tool
+- [Tailwind CSS](https://tailwindcss.com/) - Styling
+- [shadcn/ui](https://ui.shadcn.com/) - UI Components
+- [Lucide Icons](https://lucide.dev/) - Icons
+
+## 📱 Mobile Optimization
+
+- Touch-friendly controls
+- Responsive layouts
+- Optimized for various screen sizes
+- Native share integration
+- Mobile-first design approach
+
+## 🔐 Privacy & Security
+
+- No server uploads required
+- All processing happens locally
+- No data collection
+- No external API calls for image processing
+
+## 🎯 Use Cases
+
+- Optimize images for web use
+- Reduce file sizes for sharing
+- Convert between image formats
+- Prepare images for social media
+- Batch process multiple images
 
 ## 🤝 Contributing
 
-Contributions are welcome and appreciated!  
-If you have a feature request or would like to report a bug, please open an [issue](https://github.com/rafay99-epic/ImageComposer/issues).
-
-To contribute:
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/your-feature`)
-3. Commit your changes (`git commit -m 'Add some feature'`)
-4. Push to the branch (`git push origin feature/your-feature`)
-5. Open a Pull Request
-
-✅ Please make sure to update tests if you modify core functionality.
-
-## 📸 Site Screenshots
-
-Take a look at some screenshots from **Image Composer** to get a feel for its interface and functionality:
-
-### 🌐 **Landing Page**
-
-The landing page gives users a quick overview of the app’s features, offering a smooth introduction and guide to get started with ease.
-![Landing Page](./public/assets/img/screenshot_1.png)
-
-### 🛠️ **Features Showcase**
-
-Explore the core features of Image Composer that enable efficient and high-quality image composition.  
-![Features Showcase](./public/assets/img/screenshot_2.png)
-
-### 📱 **Responsive Design**
-
-Image Composer is designed to be fully responsive, ensuring a seamless user experience across all devices, from desktop to mobile.  
-![Responsive Design](./public/assets/img/screenshot_3.png)
+Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## 📄 License
 
-This project is licensed under the [MIT License](./LICENSE).
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 📫 Contact
+## 🙏 Acknowledgments
+
+- [browser-image-compression](https://www.npmjs.com/package/browser-image-compression) for image processing
+- [react-hot-toast](https://react-hot-toast.com/) for notifications
+- Community feedback and contributions
+
+---
 
 Made with ❤️ by [Abdul Rafay](https://rafay99.com)
-
-For any questions or suggestions, feel free to reach out or create an issue on the repo.
