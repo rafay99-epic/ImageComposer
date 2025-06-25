@@ -15,6 +15,13 @@ export const useImageComposer = () => {
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const [processing, setProcessing] = useState<boolean>(false);
   const [currentProcessing, setCurrentProcessing] = useState<number>(0);
+  const [showSocialShare, setShowSocialShare] = useState<boolean>(false);
+  const [shareData, setShareData] = useState<{
+    imageCount: number;
+    compressionRatio?: number;
+    originalSize?: string;
+    compressedSize?: string;
+  }>();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Drag & Drop Handlers
@@ -203,7 +210,17 @@ export const useImageComposer = () => {
         processedImages.push(processedImage);
       }
 
-      // Download all processed images
+      // Calculate compression statistics
+      let totalOriginalSize = 0;
+      let totalCompressedSize = 0;
+
+      for (let i = 0; i < images.length; i++) {
+        if (selectedImages[i]) {
+          totalOriginalSize += images[i]!.size;
+        }
+      }
+
+      // Download all processed images and calculate compressed sizes
       for (let i = 0; i < processedImages.length; i++) {
         const link = document.createElement("a");
         link.href = processedImages[i]!;
@@ -212,16 +229,43 @@ export const useImageComposer = () => {
         link.click();
         document.body.removeChild(link);
 
+        // Calculate compressed size by converting data URL to blob
+        const response = await fetch(processedImages[i]!);
+        const blob = await response.blob();
+        totalCompressedSize += blob.size;
+
         // Small delay between downloads
         await new Promise((resolve) => setTimeout(resolve, 100));
       }
+
+      // Calculate compression ratio
+      const compressionRatio = Math.round(
+        ((totalOriginalSize - totalCompressedSize) / totalOriginalSize) * 100
+      );
+
+      // Format file sizes
+      const formatSize = (bytes: number) => {
+        if (bytes === 0) return "0 B";
+        const k = 1024;
+        const sizes = ["B", "KB", "MB", "GB"];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + " " + sizes[i];
+      };
+
+      // Set share data for social sharing
+      setShareData({
+        imageCount: selectedCount,
+        compressionRatio,
+        originalSize: formatSize(totalOriginalSize),
+        compressedSize: formatSize(totalCompressedSize),
+      });
 
       // Dismiss loading toast and show success toast
       toast.dismiss();
       toast.success(
         `🎉 ${selectedCount} image${
           selectedCount > 1 ? "s" : ""
-        } converted and downloaded!`,
+        } converted and downloaded! Reduced size by ${compressionRatio}%`,
         {
           duration: 4000,
           style: {
@@ -231,6 +275,11 @@ export const useImageComposer = () => {
           },
         }
       );
+
+      // Show social share modal after a short delay
+      setTimeout(() => {
+        setShowSocialShare(true);
+      }, 1000);
     } catch (error) {
       console.error("Error:", error);
       // Dismiss loading toast and show error toast
@@ -254,6 +303,24 @@ export const useImageComposer = () => {
     fileInputRef.current?.click();
   };
 
+  // Social sharing handlers
+  const handleCloseSocialShare = () => {
+    setShowSocialShare(false);
+    setShareData(undefined);
+  };
+
+  const handleOpenSocialShare = () => {
+    if (shareData) {
+      setShowSocialShare(true);
+    } else {
+      // Show share modal with default data if no compression data available
+      setShareData({
+        imageCount: images.length || 1,
+      });
+      setShowSocialShare(true);
+    }
+  };
+
   return {
     // State
     images,
@@ -266,6 +333,8 @@ export const useImageComposer = () => {
     isDragging,
     processing,
     currentProcessing,
+    showSocialShare,
+    shareData,
     fileInputRef,
 
     // Setters
@@ -287,5 +356,7 @@ export const useImageComposer = () => {
     getSelectedCount,
     handleCompression,
     triggerFileInput,
+    handleCloseSocialShare,
+    handleOpenSocialShare,
   };
 };

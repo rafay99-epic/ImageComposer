@@ -9,8 +9,10 @@ import {
   Sparkles,
   X,
   Check,
+  Share2,
 } from "lucide-react";
 import { useIsMobile } from "../hooks/useIsMobile";
+import SocialShare from "./SocialShare";
 
 interface ImageComposerUIProps {
   // State
@@ -23,6 +25,13 @@ interface ImageComposerUIProps {
   cornerRadius: number;
   isDragging: boolean;
   processing: boolean;
+  showSocialShare: boolean;
+  shareData?: {
+    imageCount: number;
+    compressionRatio?: number;
+    originalSize?: string;
+    compressedSize?: string;
+  };
   fileInputRef: React.RefObject<HTMLInputElement>;
 
   // Setters
@@ -43,6 +52,8 @@ interface ImageComposerUIProps {
   getSelectedCount: () => number;
   handleCompression: () => void;
   triggerFileInput: () => void;
+  handleCloseSocialShare: () => void;
+  handleOpenSocialShare: () => void;
 }
 
 const ImageComposerUI: React.FC<ImageComposerUIProps> = ({
@@ -55,6 +66,8 @@ const ImageComposerUI: React.FC<ImageComposerUIProps> = ({
   cornerRadius,
   isDragging,
   processing,
+  showSocialShare,
+  shareData,
   fileInputRef,
   setQuality,
   setFormat,
@@ -71,6 +84,8 @@ const ImageComposerUI: React.FC<ImageComposerUIProps> = ({
   getSelectedCount,
   handleCompression,
   triggerFileInput,
+  handleCloseSocialShare,
+  handleOpenSocialShare,
 }) => {
   const { isMobile, isTablet, isTouchDevice } = useIsMobile();
 
@@ -828,7 +843,7 @@ const ImageComposerUI: React.FC<ImageComposerUIProps> = ({
               </div>
 
               {/* Process Button - optimized for mobile */}
-              <div className="relative">
+              <div className="relative space-y-4">
                 <button
                   onClick={handleCompression}
                   disabled={
@@ -870,11 +885,29 @@ const ImageComposerUI: React.FC<ImageComposerUIProps> = ({
                     </span>
                   )}
                 </button>
+
+                {/* Share Button */}
+                <button
+                  onClick={handleOpenSocialShare}
+                  className={`w-full ${
+                    isMobile ? "py-3 px-6 text-sm" : "py-3 px-8 text-sm"
+                  } glass border border-accent/30 text-accent font-medium rounded-xl hover:bg-accent/10 transition-all duration-300 touch-manipulation flex items-center justify-center gap-3`}
+                >
+                  <Share2 className={`${isMobile ? "w-5 h-5" : "w-4 h-4"}`} />
+                  Share Image Composer
+                </button>
               </div>
             </div>
           </div>
         </div>
       </div>
+
+      {/* Social Share Modal */}
+      <SocialShare
+        isOpen={showSocialShare}
+        onClose={handleCloseSocialShare}
+        shareData={shareData}
+      />
     </section>
   );
 };
