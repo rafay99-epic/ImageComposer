@@ -1,0 +1,98 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-text font-sans antialiased;
+    background-image:
+      radial-gradient(circle at 25% 25%, rgba(192, 166, 217, 0.1) 0%, transparent 50%),
+      radial-gradient(circle at 75% 75%, rgba(189, 101, 103, 0.1) 0%, transparent 50%);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-display font-semibold tracking-tight text-text;
+  }
+
+  /* Custom scrollbar styling */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: rgba(192, 166, 217, 0.1);
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #c0a6d9, #bd6567);
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #bd6567, #7d3650);
+  }
+
+  /* Smooth transitions for all elements */
+  * {
+    scroll-behavior: smooth;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply px-6 py-3 rounded-lg font-medium transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-105;
+  }
+
+  .btn-primary {
+    @apply bg-primary text-background shadow-lg hover:shadow-xl;
+  }
+
+  .btn-secondary {
+    @apply bg-secondary text-text shadow-lg hover:shadow-xl;
+  }
+
+  .btn-accent {
+    @apply bg-accent text-text shadow-lg hover:shadow-xl;
+  }
+
+  .btn-outline {
+    @apply border-2 border-primary text-primary hover:bg-primary hover:text-background backdrop-blur-sm;
+  }
+
+  .card {
+    @apply bg-background/20 backdrop-blur-lg rounded-xl border border-primary/20 p-6 hover:border-primary/40 transition-all duration-300;
+  }
+
+  .glass {
+    @apply bg-background/10 backdrop-blur-lg border border-primary/20;
+  }
+
+  .container-custom {
+    @apply container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl;
+  }
+
+  .floating-element {
+    @apply animate-float;
+  }
+
+  .glow-effect {
+    @apply animate-glow;
+  }
+
+  /* Smooth scroll offset for anchor links */
+  section[id] {
+    scroll-margin-top: 2rem;
+  }
+}
