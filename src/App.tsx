@@ -6,6 +6,7 @@ import Terms from "./pages/Terms";
 import Contact from "./pages/Contact";
 import SvgConverter from "./pages/SvgConverter";
 import NotFound from "./pages/NotFound";
+import ImageComposer from "./components/ImageComposer";
 
 const App: React.FC = () => {
   return (
@@ -18,6 +19,7 @@ const App: React.FC = () => {
         <Route path="/security" element={<Privacy />} />
         <Route path="/cookies" element={<Privacy />} />
         <Route path="/svg-converter" element={<SvgConverter />} />
+        <Route path="/image-composer" element={<ImageComposer />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>

@@ -35,7 +35,7 @@ const Features: React.FC = () => {
         "Compress images up to 90% while maintaining perfect quality. Support for JPEG, PNG, and WebP formats.",
       icon: <Image className="w-12 h-12" />,
       color: "primary",
-      link: "/",
+      link: "/image-composer",
     },
     {
       title: "SVG Converter",
