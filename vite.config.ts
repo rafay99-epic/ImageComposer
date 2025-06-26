@@ -22,4 +22,16 @@ export default defineConfig({
       },
     },
   },
+  define: {
+    "process.env": {},
+    "process.platform": JSON.stringify("browser"),
+    "process.version": JSON.stringify("v16.0.0"),
+    process: {
+      platform: "browser",
+      env: {},
+      version: "v16.0.0",
+      nextTick: (callback: Function, ...args: any[]) =>
+        queueMicrotask(() => callback(...args)),
+    },
+  },
 });

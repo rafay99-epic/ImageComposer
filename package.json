@@ -5,8 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
-    "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
+    "build": "tsc && vite build",
+    "types": "tsc --emitDeclarationOnly",
+    "types:watch": "tsc --emitDeclarationOnly --watch",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -14,13 +16,21 @@
     "@radix-ui/react-dropdown-menu": "^2.1.15",
     "@radix-ui/react-slot": "^1.2.3",
     "@radix-ui/react-toast": "^1.2.14",
+    "@types/mermaid": "^9.1.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "graceful-fs": "^4.2.11",
     "lucide-react": "^0.523.0",
+    "mermaid": "^11.7.0",
+    "process": "^0.11.10",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hot-toast": "^2.5.2",
+    "react-markdown": "^10.1.0",
     "react-router-dom": "^7.6.2",
+    "react-syntax-highlighter": "^15.6.1",
+    "remark-gfm": "^4.0.1",
+    "remark-mermaid": "^0.2.0",
     "replicate": "^1.0.1",
     "svgo": "^4.0.0",
     "tailwind-merge": "^3.3.1"
@@ -29,6 +39,7 @@
     "@types/react": "^18.2.43",
     "@types/react-dom": "^18.2.17",
     "@types/react-router-dom": "^5.3.3",
+    "@types/react-syntax-highlighter": "^15.5.13",
     "@vitejs/plugin-react": "^4.2.1",
     "autoprefixer": "^10.4.16",
     "eslint": "^8.55.0",
@@ -37,6 +48,9 @@
     "eslint-plugin-react-refresh": "^0.4.5",
     "postcss": "^8.4.32",
     "tailwindcss": "^3.4.0",
+    "tsup": "^8.5.0",
+    "typescript": "^5.8.3",
+    "unified": "^11.0.5",
     "vite": "^5.0.8"
   }
 }
