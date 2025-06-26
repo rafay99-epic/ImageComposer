@@ -11,8 +11,8 @@ import {
   Check,
   Share2,
 } from "lucide-react";
-import { useIsMobile } from "../hooks/useIsMobile";
-import SocialShare from "./SocialShare";
+import { useIsMobile } from "../../hooks/useIsMobile";
+import SocialShare from "../SocialShare";
 
 interface ImageComposerUIProps {
   // State

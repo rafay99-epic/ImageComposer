@@ -45,6 +45,14 @@ const Features: React.FC = () => {
       color: "accent",
       link: "/svg-converter",
     },
+    {
+      title: "Image Enhancer",
+      description:
+        "Transform blurry and low-quality images into crystal-clear, professional-grade photos with AI-powered enhancement.",
+      icon: <Sparkles className="w-12 h-12" />,
+      color: "secondary",
+      link: "/image-enhancer",
+    },
   ];
 
   // Regular features
