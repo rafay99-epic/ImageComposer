@@ -7,7 +7,6 @@ import {
   Share2,
   X,
   Check,
-  Image,
   Sliders,
   Info,
   FileImage,

@@ -6,8 +6,6 @@ import {
   Sparkles,
   Shield,
   Layers,
-  Cpu,
-  Globe,
   BookImage,
   FileImage,
   ArrowRight,
@@ -15,6 +13,7 @@ import {
   Check,
 } from "lucide-react";
 import { Button } from "./ui/button";
+import { isFeatureEnabled, type FeatureFlags } from "../lib/featureFlags";
 
 interface Feature {
   title: string;
@@ -22,6 +21,7 @@ interface Feature {
   icon: JSX.Element;
   color: "primary" | "secondary" | "accent";
   link: string;
+  featureFlag?: keyof FeatureFlags;
 }
 
 interface MainFeature extends Feature {
@@ -44,8 +44,9 @@ const Features: React.FC<FeaturesProps> = ({
       description:
         "Compress images up to 90% while maintaining perfect quality. Support for JPEG, PNG, and WebP formats.",
       icon: <Image className="w-12 h-12" />,
-      color: "primary",
+      color: "primary" as const,
       link: "/image-composer",
+      featureFlag: "imageCompression" as keyof FeatureFlags,
       benefits: [
         "Reduce file size by up to 90%",
         "Maintain original image quality",
@@ -58,8 +59,9 @@ const Features: React.FC<FeaturesProps> = ({
       description:
         "Convert your PNG and JPG images to scalable SVG format with advanced customization options.",
       icon: <FileImage className="w-12 h-12" />,
-      color: "accent",
+      color: "accent" as const,
       link: "/svg-converter",
+      featureFlag: "svgConverter" as keyof FeatureFlags,
       benefits: [
         "Convert raster to vector format",
         "Customizable output settings",
@@ -72,8 +74,9 @@ const Features: React.FC<FeaturesProps> = ({
       description:
         "Transform your images with smart AI upscaling. Automatically selects between Real-ESRGAN for small images and ControlNet for detailed enhancements.",
       icon: <Sparkles className="w-12 h-12" />,
-      color: "secondary",
+      color: "secondary" as const,
       link: "/image-enhancer",
+      featureFlag: "aiEnhancement" as keyof FeatureFlags,
       benefits: [
         "Smart AI-powered upscaling",
         "Automatic model selection",
@@ -86,8 +89,9 @@ const Features: React.FC<FeaturesProps> = ({
       description:
         "Fine-tune your images with manual adjustments. Adjust brightness, contrast, saturation, and more to get the perfect look.",
       icon: <BookImage className="w-12 h-12" />,
-      color: "secondary",
+      color: "secondary" as const,
       link: "/manual-enhancer",
+      featureFlag: "manualEnhancement" as keyof FeatureFlags,
       benefits: [
         "Complete control over adjustments",
         "Professional-grade filters",
@@ -95,7 +99,9 @@ const Features: React.FC<FeaturesProps> = ({
         "Multiple enhancement presets",
       ],
     },
-  ];
+  ].filter(
+    (feature) => !feature.featureFlag || isFeatureEnabled(feature.featureFlag)
+  );
 
   // Regular features for landing page
   const features: Feature[] = [
@@ -103,35 +109,40 @@ const Features: React.FC<FeaturesProps> = ({
       title: "Lightning Fast Compression",
       description:
         "Advanced algorithms that compress images up to 90% while maintaining crystal-clear quality.",
-      color: "primary",
+      color: "primary" as const,
       icon: <Zap className="w-8 h-8" />,
       link: "/",
+      featureFlag: "imageCompression" as keyof FeatureFlags,
     },
     {
       title: "Smart Format Conversion",
       description:
         "Seamlessly convert between JPEG, PNG, and WebP with intelligent format optimization.",
-      color: "accent",
+      color: "accent" as const,
       icon: <Layers className="w-8 h-8" />,
       link: "/smart-format-conversion",
+      featureFlag: "svgConverter" as keyof FeatureFlags,
     },
     {
       title: "Professional Enhancement",
       description:
         "Advanced image refinements including corner rounding, filters, and aspect ratio optimization.",
-      color: "secondary",
+      color: "secondary" as const,
       icon: <Sparkles className="w-8 h-8" />,
       link: "/professional-enhancement",
+      featureFlag: "manualEnhancement" as keyof FeatureFlags,
     },
     {
       title: "Enterprise Security",
       description:
         "100% client-side processing ensures your images never leave your device. GDPR compliant.",
-      color: "primary",
+      color: "primary" as const,
       icon: <Shield className="w-8 h-8" />,
       link: "/enterprise-security",
     },
-  ];
+  ].filter(
+    (feature) => !feature.featureFlag || isFeatureEnabled(feature.featureFlag)
+  );
 
   if (variant === "page") {
     // For individual feature pages, show a different layout

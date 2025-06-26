@@ -87,7 +87,7 @@ const ImageComposerUI: React.FC<ImageComposerUIProps> = ({
   handleCloseSocialShare,
   handleOpenSocialShare,
 }) => {
-  const { isMobile, isTablet, isTouchDevice } = useIsMobile();
+  const { isMobile, isTouchDevice } = useIsMobile();
 
   return (
     <section

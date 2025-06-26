@@ -1,5 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { isFeatureEnabled } from "./lib/featureFlags";
 import Home from "./pages/Home";
 import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
@@ -21,11 +22,19 @@ const App: React.FC = () => {
         <Route path="/contact" element={<Contact />} />
         <Route path="/security" element={<Privacy />} />
         <Route path="/cookies" element={<Privacy />} />
-        <Route path="/svg-converter" element={<SvgConverter />} />
-        <Route path="/image-composer" element={<ImageComposer />} />
-        <Route path="/image-enhancer" element={<ImageEnhancer />} />
+        {isFeatureEnabled("svgConverter") && (
+          <Route path="/svg-converter" element={<SvgConverter />} />
+        )}
+        {isFeatureEnabled("imageCompression") && (
+          <Route path="/image-composer" element={<ImageComposer />} />
+        )}
+        {isFeatureEnabled("aiEnhancement") && (
+          <Route path="/image-enhancer" element={<ImageEnhancer />} />
+        )}
         <Route path="/features" element={<Features />} />
-        <Route path="/manual-enhancer" element={<ManualEnhancer />} />
+        {isFeatureEnabled("manualEnhancement") && (
+          <Route path="/manual-enhancer" element={<ManualEnhancer />} />
+        )}
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>

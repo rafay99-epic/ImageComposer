@@ -1,15 +1,14 @@
 import React, { useState } from "react";
 import {
   Upload,
-  Image as ImageIcon,
   FileImage,
-  Info,
   Check,
   X,
   Download,
   Sparkles,
   Sliders,
   RotateCcw,
+  Settings,
 } from "lucide-react";
 import { Button } from "../components/ui/button";
 import toast, { Toaster } from "react-hot-toast";
@@ -20,6 +19,8 @@ import {
   type ManualEnhancementSettings,
 } from "../lib/manualEnhancement";
 import { enhancementPresets } from "../lib/enhancementPresets";
+import { isFeatureEnabled } from "../lib/featureFlags";
+import FeatureManager from "../components/FeatureManager";
 
 const ManualEnhancer: React.FC = () => {
   const { isMobile } = useIsMobile();
@@ -28,10 +29,19 @@ const ManualEnhancer: React.FC = () => {
   const [enhancedUrls, setEnhancedUrls] = useState<string[]>([]);
   const [selectedImages, setSelectedImages] = useState<boolean[]>([]);
   const [currentProcessing, setCurrentProcessing] = useState(0);
-  const [showSocialShare, setShowSocialShare] = useState(false);
   const [settings, setSettings] =
     useState<ManualEnhancementSettings>(defaultSettings);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [showFeatureManager, setShowFeatureManager] = useState(false);
+
+  // Feature flags
+  const enableBatchProcessing = isFeatureEnabled("batchProcessing");
+  const enablePresets = isFeatureEnabled("enhancementPresets");
+  const enableSharpness = isFeatureEnabled("sharpnessAdjustment");
+  const enableNoise = isFeatureEnabled("noiseReduction");
+  const enableColorAdjustments = isFeatureEnabled("colorAdjustments");
+  const enableUpscaling = isFeatureEnabled("upscaling");
+  const enableDragAndDrop = isFeatureEnabled("dragAndDrop");
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
@@ -106,7 +116,7 @@ const ManualEnhancer: React.FC = () => {
       const enhanced = await enhanceMultipleImages(
         imagesToProcess,
         settings,
-        (current, total) => setCurrentProcessing(current)
+        (current) => setCurrentProcessing(current)
       );
 
       setEnhancedUrls(enhanced);
@@ -180,6 +190,12 @@ const ManualEnhancer: React.FC = () => {
         }}
       />
 
+      {/* Feature Manager */}
+      <FeatureManager
+        isOpen={showFeatureManager}
+        onClose={() => setShowFeatureManager(false)}
+      />
+
       {/* Hero Section with Background */}
       <div className="relative overflow-hidden bg-gradient-to-b from-primary/5 to-background py-16">
         {/* Background Elements */}
@@ -199,21 +215,31 @@ const ManualEnhancer: React.FC = () => {
         {/* Hero Content */}
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mx-auto max-w-2xl text-center">
-            <div
-              className={`inline-flex items-center gap-2 ${
-                isMobile ? "px-3 py-1.5" : "px-4 py-2"
-              } rounded-full glass border border-primary/30 mb-8`}
-            >
-              <FileImage
-                className={`${isMobile ? "w-3 h-3" : "w-4 h-4"} text-primary`}
-              />
-              <span
-                className={`${
-                  isMobile ? "text-xs" : "text-sm"
-                } font-medium text-text/80`}
+            <div className="flex items-center justify-center gap-4 mb-8">
+              <div
+                className={`inline-flex items-center gap-2 ${
+                  isMobile ? "px-3 py-1.5" : "px-4 py-2"
+                } rounded-full glass border border-primary/30`}
               >
-                Manual Image Enhancement
-              </span>
+                <FileImage
+                  className={`${isMobile ? "w-3 h-3" : "w-4 h-4"} text-primary`}
+                />
+                <span
+                  className={`${
+                    isMobile ? "text-xs" : "text-sm"
+                  } font-medium text-text/80`}
+                >
+                  Manual Image Enhancement
+                </span>
+              </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setShowFeatureManager(true)}
+                className="rounded-full"
+              >
+                <Settings className="w-4 h-4" />
+              </Button>
             </div>
 
             <h1
@@ -239,14 +265,18 @@ const ManualEnhancer: React.FC = () => {
             <div className="relative">
               <div className="absolute -inset-1 bg-gradient-to-r from-primary via-accent to-secondary rounded-2xl blur opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-pulse-slow"></div>
 
-              <div className="relative border-2 border-dashed border-primary/30 rounded-xl p-8 text-center bg-primary/5 transition-all hover:bg-primary/10">
+              <div
+                className={`relative border-2 border-dashed border-primary/30 rounded-xl p-8 text-center bg-primary/5 transition-all hover:bg-primary/10 ${
+                  enableDragAndDrop ? "cursor-pointer" : ""
+                }`}
+              >
                 <input
                   type="file"
                   accept="image/*"
                   onChange={handleFileSelect}
                   className="hidden"
                   id="file-upload"
-                  multiple
+                  multiple={enableBatchProcessing}
                 />
                 <label
                   htmlFor="file-upload"
@@ -261,7 +291,10 @@ const ManualEnhancer: React.FC = () => {
                       : "Choose images"}
                   </span>
                   <span className="text-sm text-text/60">
-                    Drop your images here, or click to browse
+                    {enableDragAndDrop
+                      ? "Drop your images here, or click to browse"
+                      : "Click to browse images"}
+                    {!enableBatchProcessing && " (single file only)"}
                   </span>
                 </label>
               </div>
@@ -328,156 +361,164 @@ const ManualEnhancer: React.FC = () => {
                       Image Quality
                     </h4>
                     <div className="space-y-6">
-                      <div className="relative">
-                        <div className="flex justify-between mb-2">
-                          <label className="text-sm text-text/70">
-                            Sharpness
-                          </label>
-                          <span className="text-sm text-primary font-medium">
-                            {settings.sharpness}%
-                          </span>
+                      {enableSharpness && (
+                        <div className="relative">
+                          <div className="flex justify-between mb-2">
+                            <label className="text-sm text-text/70">
+                              Sharpness
+                            </label>
+                            <span className="text-sm text-primary font-medium">
+                              {settings.sharpness}%
+                            </span>
+                          </div>
+                          <input
+                            type="range"
+                            min="0"
+                            max="200"
+                            value={settings.sharpness}
+                            onChange={(e) =>
+                              setSettings((prev) => ({
+                                ...prev,
+                                sharpness: parseFloat(e.target.value),
+                              }))
+                            }
+                            className="w-full h-2 bg-primary/10 rounded-lg appearance-none cursor-pointer accent-primary"
+                          />
                         </div>
-                        <input
-                          type="range"
-                          min="0"
-                          max="200"
-                          value={settings.sharpness}
-                          onChange={(e) =>
-                            setSettings((prev) => ({
-                              ...prev,
-                              sharpness: parseFloat(e.target.value),
-                            }))
-                          }
-                          className="w-full h-2 bg-primary/10 rounded-lg appearance-none cursor-pointer accent-primary"
-                        />
-                      </div>
-                      <div className="relative">
-                        <div className="flex justify-between mb-2">
-                          <label className="text-sm text-text/70">
-                            Noise Reduction
-                          </label>
-                          <span className="text-sm text-primary font-medium">
-                            {settings.denoise}%
-                          </span>
+                      )}
+                      {enableNoise && (
+                        <div className="relative">
+                          <div className="flex justify-between mb-2">
+                            <label className="text-sm text-text/70">
+                              Noise Reduction
+                            </label>
+                            <span className="text-sm text-primary font-medium">
+                              {settings.denoise}%
+                            </span>
+                          </div>
+                          <input
+                            type="range"
+                            min="0"
+                            max="200"
+                            value={settings.denoise}
+                            onChange={(e) =>
+                              setSettings((prev) => ({
+                                ...prev,
+                                denoise: parseFloat(e.target.value),
+                              }))
+                            }
+                            className="w-full h-2 bg-primary/10 rounded-lg appearance-none cursor-pointer accent-primary"
+                          />
                         </div>
-                        <input
-                          type="range"
-                          min="0"
-                          max="200"
-                          value={settings.denoise}
-                          onChange={(e) =>
-                            setSettings((prev) => ({
-                              ...prev,
-                              denoise: parseFloat(e.target.value),
-                            }))
-                          }
-                          className="w-full h-2 bg-primary/10 rounded-lg appearance-none cursor-pointer accent-primary"
-                        />
-                      </div>
-                      <div className="relative">
-                        <div className="flex justify-between mb-2">
-                          <label className="text-sm text-text/70">
-                            Upscale Factor
-                          </label>
-                          <span className="text-sm text-primary font-medium">
-                            {settings.upscaleFactor}x
-                          </span>
+                      )}
+                      {enableUpscaling && (
+                        <div className="relative">
+                          <div className="flex justify-between mb-2">
+                            <label className="text-sm text-text/70">
+                              Upscale Factor
+                            </label>
+                            <span className="text-sm text-primary font-medium">
+                              {settings.upscaleFactor}x
+                            </span>
+                          </div>
+                          <input
+                            type="range"
+                            min="1"
+                            max="4"
+                            step="0.5"
+                            value={settings.upscaleFactor}
+                            onChange={(e) =>
+                              setSettings((prev) => ({
+                                ...prev,
+                                upscaleFactor: parseFloat(e.target.value),
+                              }))
+                            }
+                            className="w-full h-2 bg-primary/10 rounded-lg appearance-none cursor-pointer accent-primary"
+                          />
                         </div>
-                        <input
-                          type="range"
-                          min="1"
-                          max="4"
-                          step="0.5"
-                          value={settings.upscaleFactor}
-                          onChange={(e) =>
-                            setSettings((prev) => ({
-                              ...prev,
-                              upscaleFactor: parseFloat(e.target.value),
-                            }))
-                          }
-                          className="w-full h-2 bg-primary/10 rounded-lg appearance-none cursor-pointer accent-primary"
-                        />
-                      </div>
+                      )}
                     </div>
                   </div>
 
                   {/* Color Adjustments */}
-                  <div className="space-y-4">
-                    <h4 className="text-sm font-medium text-text/80">
-                      Color Adjustments
-                    </h4>
-                    <div className="space-y-6">
-                      <div className="relative">
-                        <div className="flex justify-between mb-2">
-                          <label className="text-sm text-text/70">
-                            Brightness
-                          </label>
-                          <span className="text-sm text-primary font-medium">
-                            {settings.brightness}%
-                          </span>
+                  {enableColorAdjustments && (
+                    <div className="space-y-4">
+                      <h4 className="text-sm font-medium text-text/80">
+                        Color Adjustments
+                      </h4>
+                      <div className="space-y-6">
+                        <div className="relative">
+                          <div className="flex justify-between mb-2">
+                            <label className="text-sm text-text/70">
+                              Brightness
+                            </label>
+                            <span className="text-sm text-primary font-medium">
+                              {settings.brightness}%
+                            </span>
+                          </div>
+                          <input
+                            type="range"
+                            min="0"
+                            max="200"
+                            value={settings.brightness}
+                            onChange={(e) =>
+                              setSettings((prev) => ({
+                                ...prev,
+                                brightness: parseFloat(e.target.value),
+                              }))
+                            }
+                            className="w-full h-2 bg-primary/10 rounded-lg appearance-none cursor-pointer accent-primary"
+                          />
                         </div>
-                        <input
-                          type="range"
-                          min="0"
-                          max="200"
-                          value={settings.brightness}
-                          onChange={(e) =>
-                            setSettings((prev) => ({
-                              ...prev,
-                              brightness: parseFloat(e.target.value),
-                            }))
-                          }
-                          className="w-full h-2 bg-primary/10 rounded-lg appearance-none cursor-pointer accent-primary"
-                        />
-                      </div>
-                      <div className="relative">
-                        <div className="flex justify-between mb-2">
-                          <label className="text-sm text-text/70">
-                            Contrast
-                          </label>
-                          <span className="text-sm text-primary font-medium">
-                            {settings.contrast}%
-                          </span>
+                        <div className="relative">
+                          <div className="flex justify-between mb-2">
+                            <label className="text-sm text-text/70">
+                              Contrast
+                            </label>
+                            <span className="text-sm text-primary font-medium">
+                              {settings.contrast}%
+                            </span>
+                          </div>
+                          <input
+                            type="range"
+                            min="0"
+                            max="200"
+                            value={settings.contrast}
+                            onChange={(e) =>
+                              setSettings((prev) => ({
+                                ...prev,
+                                contrast: parseFloat(e.target.value),
+                              }))
+                            }
+                            className="w-full h-2 bg-primary/10 rounded-lg appearance-none cursor-pointer accent-primary"
+                          />
                         </div>
-                        <input
-                          type="range"
-                          min="0"
-                          max="200"
-                          value={settings.contrast}
-                          onChange={(e) =>
-                            setSettings((prev) => ({
-                              ...prev,
-                              contrast: parseFloat(e.target.value),
-                            }))
-                          }
-                          className="w-full h-2 bg-primary/10 rounded-lg appearance-none cursor-pointer accent-primary"
-                        />
-                      </div>
-                      <div className="relative">
-                        <div className="flex justify-between mb-2">
-                          <label className="text-sm text-text/70">
-                            Saturation
-                          </label>
-                          <span className="text-sm text-primary font-medium">
-                            {settings.saturation}%
-                          </span>
+                        <div className="relative">
+                          <div className="flex justify-between mb-2">
+                            <label className="text-sm text-text/70">
+                              Saturation
+                            </label>
+                            <span className="text-sm text-primary font-medium">
+                              {settings.saturation}%
+                            </span>
+                          </div>
+                          <input
+                            type="range"
+                            min="0"
+                            max="200"
+                            value={settings.saturation}
+                            onChange={(e) =>
+                              setSettings((prev) => ({
+                                ...prev,
+                                saturation: parseFloat(e.target.value),
+                              }))
+                            }
+                            className="w-full h-2 bg-primary/10 rounded-lg appearance-none cursor-pointer accent-primary"
+                          />
                         </div>
-                        <input
-                          type="range"
-                          min="0"
-                          max="200"
-                          value={settings.saturation}
-                          onChange={(e) =>
-                            setSettings((prev) => ({
-                              ...prev,
-                              saturation: parseFloat(e.target.value),
-                            }))
-                          }
-                          className="w-full h-2 bg-primary/10 rounded-lg appearance-none cursor-pointer accent-primary"
-                        />
                       </div>
                     </div>
-                  </div>
+                  )}
                 </div>
 
                 {/* Reset Button */}
@@ -495,54 +536,60 @@ const ManualEnhancer: React.FC = () => {
               </div>
 
               {/* Presets */}
-              <div className="p-6 bg-background/30 rounded-xl border border-primary/20">
-                <h3 className="text-lg font-medium text-text mb-4 flex items-center gap-2">
-                  <Sparkles className="w-5 h-5" />
-                  Enhancement Presets
-                </h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {enhancementPresets.map((preset) => (
-                    <button
-                      key={preset.name}
-                      onClick={() => applyPreset(preset.name)}
-                      className="group p-4 glass rounded-xl border border-primary/20 hover:border-primary/40 transition-all text-left hover:bg-primary/5"
-                    >
-                      <div className="flex items-start gap-3">
-                        <div className="w-10 h-10 flex items-center justify-center rounded-lg bg-primary/10 text-xl">
-                          {preset.icon}
+              {enablePresets && (
+                <div className="p-6 bg-background/30 rounded-xl border border-primary/20">
+                  <h3 className="text-lg font-medium text-text mb-4 flex items-center gap-2">
+                    <Sparkles className="w-5 h-5" />
+                    Enhancement Presets
+                  </h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {enhancementPresets.map((preset) => (
+                      <button
+                        key={preset.name}
+                        onClick={() => applyPreset(preset.name)}
+                        className="group p-4 glass rounded-xl border border-primary/20 hover:border-primary/40 transition-all text-left hover:bg-primary/5"
+                      >
+                        <div className="flex items-start gap-3">
+                          <div className="w-10 h-10 flex items-center justify-center rounded-lg bg-primary/10 text-xl">
+                            {preset.icon}
+                          </div>
+                          <div>
+                            <span className="text-base font-medium text-text block group-hover:text-primary transition-colors">
+                              {preset.name}
+                            </span>
+                            <span className="text-sm text-text/60 block mt-1">
+                              {preset.description}
+                            </span>
+                          </div>
                         </div>
-                        <div>
-                          <span className="text-base font-medium text-text block group-hover:text-primary transition-colors">
-                            {preset.name}
-                          </span>
-                          <span className="text-sm text-text/60 block mt-1">
-                            {preset.description}
-                          </span>
-                        </div>
-                      </div>
-                    </button>
-                  ))}
+                      </button>
+                    ))}
+                  </div>
                 </div>
-              </div>
+              )}
 
               {/* Action Buttons */}
               <div className="flex flex-wrap gap-4 justify-center">
-                <Button
-                  onClick={selectAllImages}
-                  variant="outline"
-                  className="flex items-center gap-2"
-                >
-                  <Check className="w-4 h-4" />
-                  Select All
-                </Button>
-                <Button
-                  onClick={deselectAllImages}
-                  variant="outline"
-                  className="flex items-center gap-2"
-                >
-                  <X className="w-4 h-4" />
-                  Deselect All
-                </Button>
+                {enableBatchProcessing && (
+                  <>
+                    <Button
+                      onClick={selectAllImages}
+                      variant="outline"
+                      className="flex items-center gap-2"
+                    >
+                      <Check className="w-4 h-4" />
+                      Select All
+                    </Button>
+                    <Button
+                      onClick={deselectAllImages}
+                      variant="outline"
+                      className="flex items-center gap-2"
+                    >
+                      <X className="w-4 h-4" />
+                      Deselect All
+                    </Button>
+                  </>
+                )}
                 <Button
                   onClick={applyEnhancements}
                   disabled={isProcessing || getSelectedCount() === 0}
