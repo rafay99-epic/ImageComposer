@@ -11,8 +11,8 @@ import {
   Check,
   Share2,
 } from "lucide-react";
-import { useIsMobile } from "../hooks/useIsMobile";
-import SocialShare from "./SocialShare";
+import { useIsMobile } from "../../hooks/useIsMobile";
+import SocialShare from "../SocialShare";
 
 interface ImageComposerUIProps {
   // State
@@ -87,7 +87,7 @@ const ImageComposerUI: React.FC<ImageComposerUIProps> = ({
   handleCloseSocialShare,
   handleOpenSocialShare,
 }) => {
-  const { isMobile, isTablet, isTouchDevice } = useIsMobile();
+  const { isMobile, isTouchDevice } = useIsMobile();
 
   return (
     <section

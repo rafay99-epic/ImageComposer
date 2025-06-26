@@ -172,10 +172,10 @@ const Footer: React.FC = () => {
             </h4>
             <ul className={`space-y-3`}>
               {[
-                { name: "Features", href: "#features" },
-                { name: "Image Optimizer", href: "#composer" },
+                { name: "Features", href: "/features" },
+                { name: "Image Optimizer", href: "/image-composer" },
                 { name: "Contact Me", href: "/contact" },
-                { name: "Documentation", href: "#" },
+                { name: "Documentation", href: "/docs" },
               ].map((item, index) => (
                 <li key={index}>
                   <a

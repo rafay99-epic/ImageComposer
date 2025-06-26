@@ -1,6 +1,6 @@
 import React from "react";
 import { Toaster } from "react-hot-toast";
-import { useImageComposer } from "../hooks/useImageComposer";
+import { useImageComposer } from "../../hooks/useImageComposer";
 import ImageComposerUI from "./ImageComposerUI";
 
 const ImageComposer: React.FC = () => {

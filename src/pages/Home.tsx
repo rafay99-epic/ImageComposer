@@ -1,7 +1,7 @@
 import React from "react";
 import Landing from "../components/Landing";
 import Features from "../components/Features";
-import ImageComposer from "../components/ImageComposer";
+import ImageComposer from "../components/image-composer/ImageComposer";
 import Footer from "../components/Footer";
 
 const Home: React.FC = () => {
