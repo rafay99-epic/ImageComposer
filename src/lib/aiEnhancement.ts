@@ -5,26 +5,45 @@ export interface AIEnhancementOptions {
   faceEnhance?: boolean;
   removeNoise?: boolean;
   improveDetail?: boolean;
+  prompt?: string;
+  negativePrompt?: string;
 }
 
 interface ReplicateResponse {
-  completed_at: string;
-  created_at: string;
-  error: string | null;
   id: string;
+  version: string;
+  urls: {
+    get: string;
+    cancel: string;
+  };
+  created_at: string;
+  completed_at: string | null;
+  status: "starting" | "processing" | "succeeded" | "failed" | "canceled";
   input: Record<string, any>;
+  output: string[] | null;
+  error: string | null;
   logs: string;
   metrics: {
     predict_time: number;
     total_time: number;
   };
-  output: string;
-  status: "starting" | "processing" | "succeeded" | "failed";
-  urls: {
-    get: string;
-    cancel: string;
-  };
+  webhook_completed: string | null;
 }
+
+// Available models
+const MODELS = {
+  REAL_ESRGAN: {
+    id: "nightmareai/real-esrgan",
+    version: "42fed1c4974146d4d2414e2be2c5277c7fcf05fcc3a73abf41610695738c1d7b",
+    description: "Fast upscaling, good for small images and removing artifacts",
+  },
+  CONTROLNET_TILE: {
+    id: "batouresearch/high-resolution-controlnet-tile",
+    version: "3b5c0222e7a6054bfc0136170f92d576ed55c5eb5c87cbc2c1e99d777fec0102",
+    description:
+      "High quality upscaling with detail enhancement, best for larger images",
+  },
+};
 
 class AIEnhancementError extends Error {
   constructor(message: string, public details?: any) {
@@ -36,8 +55,8 @@ class AIEnhancementError extends Error {
 async function waitForPrediction(
   predictionId: string
 ): Promise<ReplicateResponse> {
-  const maxAttempts = 60; // Maximum number of polling attempts
-  const pollingInterval = 1000; // Polling interval in milliseconds
+  const maxAttempts = 60;
+  const pollingInterval = 1000;
   let attempts = 0;
 
   while (attempts < maxAttempts) {
@@ -50,6 +69,8 @@ async function waitForPrediction(
     }
 
     const prediction = await response.json();
+    console.log("Prediction status:", prediction.status);
+
     if (prediction.status === "succeeded") {
       return prediction;
     } else if (prediction.status === "failed") {
@@ -59,7 +80,6 @@ async function waitForPrediction(
       );
     }
 
-    // Wait before next polling attempt
     await new Promise((resolve) => setTimeout(resolve, pollingInterval));
     attempts++;
   }
@@ -70,64 +90,119 @@ async function waitForPrediction(
   );
 }
 
+async function getImageDimensions(
+  imageUrl: string
+): Promise<{ width: number; height: number }> {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => resolve({ width: img.width, height: img.height });
+    img.onerror = () => reject(new Error("Failed to load image"));
+    img.src = imageUrl;
+  });
+}
+
 export async function enhanceImageWithAI(
   imageUrl: string,
   options: AIEnhancementOptions = {}
 ): Promise<string> {
   try {
-    // Validate input image
     if (!imageUrl) {
-      throw new AIEnhancementError(
-        "No image provided",
-        "The image URL or base64 data is empty"
-      );
+      throw new AIEnhancementError("No image provided");
     }
 
-    // Prepare the input parameters
-    const input = {
-      image: imageUrl,
-      prompt: "enhance this image with more details and better quality",
-      scale: options.upscale ? 2 : 1,
-      face_enhance: options.faceEnhance,
-      denoise: options.removeNoise ? "medium" : "none",
-      enhance_detail: options.improveDetail,
-      safety_filter_level: "block_medium_and_above",
-    };
+    // Clean up base64 data
+    const base64Data = imageUrl.startsWith("data:")
+      ? imageUrl.split(",")[1]
+      : imageUrl;
 
-    console.log("AI Enhancement input:", {
-      ...input,
-      image: imageUrl.substring(0, 100) + "...", // Truncate for logging
+    // Get image dimensions to determine best model
+    const dimensions = await getImageDimensions(imageUrl);
+    console.log("Image dimensions:", dimensions);
+
+    // Select appropriate model based on image characteristics
+    const isSmallImage = dimensions.width < 512 || dimensions.height < 512;
+    const selectedModel = isSmallImage
+      ? MODELS.REAL_ESRGAN
+      : MODELS.CONTROLNET_TILE;
+
+    console.log("Selected model:", {
+      name: selectedModel.id,
+      reason: isSmallImage
+        ? "Small image, using fast upscaler"
+        : "Larger image, using high-quality upscaler",
+      dimensions,
     });
 
-    // Start the prediction using our API route
+    // Prepare model-specific input
+    let modelInput;
+    if (selectedModel === MODELS.REAL_ESRGAN) {
+      modelInput = {
+        img: base64Data,
+        scale: options.upscale ? 4 : 2,
+        face_enhance: options.faceEnhance,
+        denoise_strength: options.removeNoise ? 0.5 : 0,
+      };
+    } else {
+      modelInput = {
+        image: base64Data,
+        prompt:
+          options.prompt ||
+          "enhance this image with more details and better quality",
+        negative_prompt:
+          options.negativePrompt || "blur, noise, artifacts, distortion",
+        steps: 20,
+        denoise: 0.4,
+        upscale_by: options.upscale ? 2 : 1.5,
+        scheduler: "karras",
+        controlnet_strength: 1,
+        guidance_scale: 7.5,
+      };
+    }
+
+    console.log("Enhancement parameters:", {
+      model: selectedModel.id,
+      ...modelInput,
+      img: modelInput.img ? "base64_data..." : undefined,
+      image: modelInput.image ? "base64_data..." : undefined,
+    });
+
+    // Start the prediction
     const startResponse = await fetch("/api/replicate", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        version:
-          "9283608cc6b7be6b65a8e44983db012355fde4132009bf99d976b2f0896856a3",
-        input,
+        version: selectedModel.version,
+        input: modelInput,
       }),
     });
 
     if (!startResponse.ok) {
-      const errorText = await startResponse.text();
+      let errorText;
+      try {
+        const errorJson = await startResponse.json();
+        errorText = JSON.stringify(errorJson);
+      } catch {
+        errorText = await startResponse.text();
+      }
+      console.error("API Error Response:", errorText);
       throw new AIEnhancementError("Failed to start AI enhancement", errorText);
     }
 
     const prediction = await startResponse.json();
-    console.log("Started prediction:", prediction.id);
-
-    // Wait for the prediction to complete
-    const result = await waitForPrediction(prediction.id);
-    console.log("AI Enhancement response:", {
-      ...result,
-      input: undefined, // Exclude input from logging
+    console.log("Started enhancement:", {
+      id: prediction.id,
+      model: selectedModel.id,
     });
 
-    // Validate the result
+    // Wait for completion
+    const result = await waitForPrediction(prediction.id);
+    console.log("Enhancement completed:", {
+      processingTime: result.metrics?.predict_time,
+      totalTime: result.metrics?.total_time,
+    });
+
     if (result.error) {
       throw new AIEnhancementError("AI model error", result.error);
     }
@@ -142,7 +217,6 @@ export async function enhanceImageWithAI(
 
     return result.output;
   } catch (error) {
-    // Log the full error for debugging
     console.error("AI Enhancement error:", {
       name: error instanceof Error ? error.name : "Unknown Error",
       message: error instanceof Error ? error.message : String(error),

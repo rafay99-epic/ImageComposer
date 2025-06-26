@@ -8,9 +8,11 @@ import {
   Layers,
   Cpu,
   Globe,
-  Award,
+  BookImage,
   FileImage,
   ArrowRight,
+  Award,
+  Check,
 } from "lucide-react";
 import { Button } from "./ui/button";
 
@@ -23,10 +25,18 @@ interface Feature {
 }
 
 interface MainFeature extends Feature {
-  // Same as Feature but explicitly defined for main features
+  benefits?: string[];
 }
 
-const Features: React.FC = () => {
+interface FeaturesProps {
+  variant?: "landing" | "page";
+  selectedFeature?: string;
+}
+
+const Features: React.FC<FeaturesProps> = ({
+  variant = "landing",
+  selectedFeature,
+}) => {
   // Main features section
   const mainFeatures: MainFeature[] = [
     {
@@ -36,6 +46,12 @@ const Features: React.FC = () => {
       icon: <Image className="w-12 h-12" />,
       color: "primary",
       link: "/image-composer",
+      benefits: [
+        "Reduce file size by up to 90%",
+        "Maintain original image quality",
+        "Support for multiple formats",
+        "Batch processing capability",
+      ],
     },
     {
       title: "SVG Converter",
@@ -44,18 +60,44 @@ const Features: React.FC = () => {
       icon: <FileImage className="w-12 h-12" />,
       color: "accent",
       link: "/svg-converter",
+      benefits: [
+        "Convert raster to vector format",
+        "Customizable output settings",
+        "Preserve image quality at any size",
+        "Professional SVG optimization",
+      ],
     },
     {
-      title: "Image Enhancer",
+      title: "AI Image Enhancement",
       description:
-        "Transform blurry and low-quality images into crystal-clear, professional-grade photos with AI-powered enhancement.",
+        "Transform your images with smart AI upscaling. Automatically selects between Real-ESRGAN for small images and ControlNet for detailed enhancements.",
       icon: <Sparkles className="w-12 h-12" />,
       color: "secondary",
       link: "/image-enhancer",
+      benefits: [
+        "Smart AI-powered upscaling",
+        "Automatic model selection",
+        "Detail preservation",
+        "Professional results",
+      ],
+    },
+    {
+      title: "Manual Image Enhancement",
+      description:
+        "Fine-tune your images with manual adjustments. Adjust brightness, contrast, saturation, and more to get the perfect look.",
+      icon: <BookImage className="w-12 h-12" />,
+      color: "secondary",
+      link: "/manual-enhancer",
+      benefits: [
+        "Complete control over adjustments",
+        "Professional-grade filters",
+        "Real-time preview",
+        "Multiple enhancement presets",
+      ],
     },
   ];
 
-  // Regular features
+  // Regular features for landing page
   const features: Feature[] = [
     {
       title: "Lightning Fast Compression",
@@ -89,53 +131,57 @@ const Features: React.FC = () => {
       icon: <Shield className="w-8 h-8" />,
       link: "/enterprise-security",
     },
-    {
-      title: "Batch Processing",
-      description:
-        "Process multiple images simultaneously with our powerful batch optimization engine.",
-      color: "accent",
-      icon: <Cpu className="w-8 h-8" />,
-      link: "/batch-processing",
-    },
-    {
-      title: "Universal Compatibility",
-      description:
-        "Works perfectly across all modern browsers and devices. No downloads required.",
-      color: "secondary",
-      icon: <Globe className="w-8 h-8" />,
-      link: "/universal-compatibility",
-    },
   ];
 
-  const getColorClasses = (color: "primary" | "secondary" | "accent") => {
-    switch (color) {
-      case "primary":
-        return {
-          iconBg: "bg-primary/20",
-          iconBorder: "border-primary/30",
-          iconText: "text-primary",
-          cardBorder: "border-primary/20",
-          cardHover: "hover:border-primary/40",
-        };
-      case "secondary":
-        return {
-          iconBg: "bg-secondary/20",
-          iconBorder: "border-secondary/30",
-          iconText: "text-secondary",
-          cardBorder: "border-secondary/20",
-          cardHover: "hover:border-secondary/40",
-        };
-      case "accent":
-        return {
-          iconBg: "bg-accent/20",
-          iconBorder: "border-accent/30",
-          iconText: "text-accent",
-          cardBorder: "border-accent/20",
-          cardHover: "hover:border-accent/40",
-        };
-    }
-  };
+  if (variant === "page") {
+    // For individual feature pages, show a different layout
+    const feature = mainFeatures.find((f) => f.title === selectedFeature);
+    if (!feature) return null;
 
+    return (
+      <section className="relative py-16 bg-background overflow-hidden">
+        <div className="absolute inset-0">
+          <div className="absolute inset-0 bg-[linear-gradient(rgba(192,166,217,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(192,166,217,0.05)_1px,transparent_1px)] bg-[size:60px_60px]"></div>
+        </div>
+
+        <div className="container mx-auto px-6 relative z-10">
+          <div className="max-w-3xl mx-auto">
+            {/* Feature Header */}
+            <div className="text-center mb-12">
+              <div
+                className={`w-16 h-16 mx-auto mb-6 p-3 rounded-2xl bg-${feature.color}/20 border border-${feature.color}/30`}
+              >
+                <div className={`text-${feature.color}`}>{feature.icon}</div>
+              </div>
+              <h2 className="text-3xl font-bold mb-4 bg-gradient-to-r from-text via-primary to-accent bg-clip-text text-transparent">
+                {feature.title}
+              </h2>
+              <p className="text-lg text-text/70">{feature.description}</p>
+            </div>
+
+            {/* Benefits Grid */}
+            {feature.benefits && (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {feature.benefits.map((benefit, index) => (
+                  <div
+                    key={index}
+                    className="flex items-start gap-4 p-4 glass rounded-xl border border-primary/20"
+                  >
+                    <div className="p-2 rounded-lg bg-primary/10">
+                      <Check className="w-5 h-5 text-primary" />
+                    </div>
+                    <p className="text-text/80">{benefit}</p>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  // Landing page layout (default)
   return (
     <section className="relative py-24 bg-background overflow-hidden">
       {/* Background Elements */}
@@ -176,7 +222,7 @@ const Features: React.FC = () => {
           </p>
         </div>
 
-        {/* Main Features */}
+        {/* Main Features Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-24">
           {mainFeatures.map((feature, index) => {
             const colors = getColorClasses(feature.color);
@@ -238,6 +284,35 @@ const Features: React.FC = () => {
       </div>
     </section>
   );
+};
+
+const getColorClasses = (color: "primary" | "secondary" | "accent") => {
+  switch (color) {
+    case "primary":
+      return {
+        iconBg: "bg-primary/20",
+        iconBorder: "border-primary/30",
+        iconText: "text-primary",
+        cardBorder: "border-primary/20",
+        cardHover: "hover:border-primary/40",
+      };
+    case "secondary":
+      return {
+        iconBg: "bg-secondary/20",
+        iconBorder: "border-secondary/30",
+        iconText: "text-secondary",
+        cardBorder: "border-secondary/20",
+        cardHover: "hover:border-secondary/40",
+      };
+    case "accent":
+      return {
+        iconBg: "bg-accent/20",
+        iconBorder: "border-accent/30",
+        iconText: "text-accent",
+        cardBorder: "border-accent/20",
+        cardHover: "hover:border-accent/40",
+      };
+  }
 };
 
 export default Features;

@@ -1,5 +1,5 @@
 export default async function handler(req, res) {
-  const REPLICATE_API_TOKEN = process.env.VITE_REPLICATE_API_TOKEN;
+  const REPLICATE_API_TOKEN = process.env.REPLICATE_API_TOKEN;
 
   if (!REPLICATE_API_TOKEN) {
     return res
@@ -19,6 +19,14 @@ export default async function handler(req, res) {
         body: JSON.stringify(req.body),
       });
 
+      if (!response.ok) {
+        const errorData = await response.json();
+        return res.status(response.status).json({
+          error: errorData.detail || "Failed to start prediction",
+          details: errorData,
+        });
+      }
+
       const data = await response.json();
       return res.status(response.status).json(data);
     } else if (req.method === "GET") {
@@ -37,6 +45,14 @@ export default async function handler(req, res) {
         }
       );
 
+      if (!response.ok) {
+        const errorData = await response.json();
+        return res.status(response.status).json({
+          error: errorData.detail || "Failed to get prediction status",
+          details: errorData,
+        });
+      }
+
       const data = await response.json();
       return res.status(response.status).json(data);
     }
@@ -44,6 +60,9 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: "Method not allowed" });
   } catch (error) {
     console.error("Replicate API error:", error);
-    return res.status(500).json({ error: "Internal server error" });
+    return res.status(500).json({
+      error: "Internal server error",
+      message: error.message,
+    });
   }
 }

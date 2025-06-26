@@ -8,6 +8,8 @@ import SvgConverter from "./pages/SvgConverter";
 import NotFound from "./pages/NotFound";
 import ImageComposer from "./components/image-composer/ImageComposer";
 import ImageEnhancer from "./components/image-enhancer/ImageEnhancer";
+import ManualEnhancer from "./pages/ManualEnhancer";
+import Features from "./components/Features";
 
 const App: React.FC = () => {
   return (
@@ -22,6 +24,8 @@ const App: React.FC = () => {
         <Route path="/svg-converter" element={<SvgConverter />} />
         <Route path="/image-composer" element={<ImageComposer />} />
         <Route path="/image-enhancer" element={<ImageEnhancer />} />
+        <Route path="/features" element={<Features />} />
+        <Route path="/manual-enhancer" element={<ManualEnhancer />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
