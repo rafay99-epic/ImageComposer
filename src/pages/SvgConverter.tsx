@@ -471,7 +471,7 @@ const SvgConverter: React.FC = () => {
                           handleDimensionChange("width", e.target.value)
                         }
                         min="1"
-                        className="w-full px-4 py-2 bg-background/50 border border-primary/20 rounded-lg text-text focus:outline-none focus:border-primary/40"
+                        className="w-full px-4 py-2 bg-background/50 border border-primary/20 rounded-lg text-text focus:outline-hidden focus:border-primary/40"
                         placeholder="Width"
                       />
                     </div>
@@ -487,7 +487,7 @@ const SvgConverter: React.FC = () => {
                           handleDimensionChange("height", e.target.value)
                         }
                         min="1"
-                        className="w-full px-4 py-2 bg-background/50 border border-primary/20 rounded-lg text-text focus:outline-none focus:border-primary/40"
+                        className="w-full px-4 py-2 bg-background/50 border border-primary/20 rounded-lg text-text focus:outline-hidden focus:border-primary/40"
                         placeholder="Height"
                       />
                     </div>

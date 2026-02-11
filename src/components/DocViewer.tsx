@@ -274,7 +274,7 @@ const DocViewer: React.FC<DocViewerProps> = ({ feature }) => {
                   value={searchQuery}
                   onChange={(e) => handleSearch(e.target.value)}
                   placeholder="Search documentation..."
-                  className="w-full pl-12 pr-4 py-3 bg-background/50 border border-primary/20 rounded-xl text-text placeholder-text/40 focus:outline-none focus:border-primary/40 transition-colors"
+                  className="w-full pl-12 pr-4 py-3 bg-background/50 border border-primary/20 rounded-xl text-text placeholder-text/40 focus:outline-hidden focus:border-primary/40 transition-colors"
                 />
                 {searchQuery && (
                   <button

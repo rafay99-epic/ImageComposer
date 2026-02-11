@@ -110,7 +110,7 @@ const Documentation: React.FC = () => {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search documentation..."
-              className="w-full pl-12 pr-4 py-3 bg-background/50 border border-primary/20 rounded-xl text-text focus:outline-none focus:border-primary/40 transition-colors"
+              className="w-full pl-12 pr-4 py-3 bg-background/50 border border-primary/20 rounded-xl text-text focus:outline-hidden focus:border-primary/40 transition-colors"
             />
           </div>
         </div>

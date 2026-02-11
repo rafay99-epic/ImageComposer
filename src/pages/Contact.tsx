@@ -148,7 +148,7 @@ const Contact: React.FC = () => {
                       value={formData.name}
                       onChange={handleInputChange}
                       required
-                      className="w-full px-4 py-3 glass rounded-lg border border-primary/20 bg-background/50 text-text placeholder-text/50 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary/50 transition-all"
+                      className="w-full px-4 py-3 glass rounded-lg border border-primary/20 bg-background/50 text-text placeholder-text/50 focus:outline-hidden focus:ring-2 focus:ring-primary/50 focus:border-primary/50 transition-all"
                       placeholder="Your name"
                     />
                   </div>
@@ -166,7 +166,7 @@ const Contact: React.FC = () => {
                       value={formData.email}
                       onChange={handleInputChange}
                       required
-                      className="w-full px-4 py-3 glass rounded-lg border border-primary/20 bg-background/50 text-text placeholder-text/50 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary/50 transition-all"
+                      className="w-full px-4 py-3 glass rounded-lg border border-primary/20 bg-background/50 text-text placeholder-text/50 focus:outline-hidden focus:ring-2 focus:ring-primary/50 focus:border-primary/50 transition-all"
                       placeholder="your.email@example.com"
                     />
                   </div>
@@ -185,7 +185,7 @@ const Contact: React.FC = () => {
                     name="subject"
                     value={formData.subject}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-3 glass rounded-lg border border-primary/20 bg-background/50 text-text placeholder-text/50 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary/50 transition-all"
+                    className="w-full px-4 py-3 glass rounded-lg border border-primary/20 bg-background/50 text-text placeholder-text/50 focus:outline-hidden focus:ring-2 focus:ring-primary/50 focus:border-primary/50 transition-all"
                     placeholder="What's this about?"
                   />
                 </div>
@@ -204,7 +204,7 @@ const Contact: React.FC = () => {
                     onChange={handleInputChange}
                     required
                     rows={6}
-                    className="w-full px-4 py-3 glass rounded-lg border border-primary/20 bg-background/50 text-text placeholder-text/50 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary/50 transition-all resize-none"
+                    className="w-full px-4 py-3 glass rounded-lg border border-primary/20 bg-background/50 text-text placeholder-text/50 focus:outline-hidden focus:ring-2 focus:ring-primary/50 focus:border-primary/50 transition-all resize-none"
                     placeholder="Tell me about your thoughts, questions, or ideas..."
                   />
                 </div>

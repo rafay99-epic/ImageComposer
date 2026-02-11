@@ -495,7 +495,7 @@ const ImageEnhancerUI: React.FC<ImageEnhancerUIProps> = ({
                     setAIOptions({ ...aiOptions, prompt: e.target.value })
                   }
                   placeholder="E.g., enhance details, improve lighting, make more vibrant"
-                  className="w-full px-4 py-2 bg-background/50 border border-primary/20 rounded-lg text-text focus:outline-none focus:border-primary/40"
+                  className="w-full px-4 py-2 bg-background/50 border border-primary/20 rounded-lg text-text focus:outline-hidden focus:border-primary/40"
                 />
               </div>
 
@@ -517,7 +517,7 @@ const ImageEnhancerUI: React.FC<ImageEnhancerUIProps> = ({
                     })
                   }
                   placeholder="E.g., blur, noise, artifacts, distortion"
-                  className="w-full px-4 py-2 bg-background/50 border border-primary/20 rounded-lg text-text focus:outline-none focus:border-primary/40"
+                  className="w-full px-4 py-2 bg-background/50 border border-primary/20 rounded-lg text-text focus:outline-hidden focus:border-primary/40"
                 />
               </div>
             </div>
@@ -652,7 +652,7 @@ const ImageEnhancerUI: React.FC<ImageEnhancerUIProps> = ({
                         upscaleFactor: Number(e.target.value),
                       }))
                     }
-                    className="w-full px-4 py-2 bg-background/50 border border-primary/20 rounded-lg text-text focus:outline-none focus:border-primary/40"
+                    className="w-full px-4 py-2 bg-background/50 border border-primary/20 rounded-lg text-text focus:outline-hidden focus:border-primary/40"
                   >
                     <option value="1">1x (Original)</option>
                     <option value="1.5">1.5x</option>
